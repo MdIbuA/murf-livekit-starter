@@ -38,8 +38,8 @@ export const APP_CONFIG_DEFAULTS: AppConfig = {
   pageDescription:
     'AI voice assistant for Indian farmers. Crop advice, pest control, and government scheme guidance — powered by Murf Falcon TTS. #VoiceForBharat',
 
-  // Pure voice agent — no chat, camera, or screen sharing needed
-  supportsChatInput: false,
+  // Chat input enabled so users can type questions in any language
+  supportsChatInput: true,
   supportsVideoInput: false,
   supportsScreenShare: false,
   isPreConnectBufferEnabled: false,

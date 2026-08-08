@@ -224,8 +224,8 @@ export function AgentSessionView_01({
   const controls: AgentControlBarControls = {
     leave: true,
     microphone: true,
-    // Voice-only — no chat, camera, or screen share
-    chat: false,
+    // Chat enabled; camera and screen share off (voice farming agent)
+    chat: supportsChatInput,
     camera: false,
     screenShare: false,
   };
