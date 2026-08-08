@@ -34,35 +34,27 @@ export interface AppConfig {
 
 export const APP_CONFIG_DEFAULTS: AppConfig = {
   companyName: 'Kisan Mitra',
-  pageTitle: 'Kisan Mitra — AI Farm Voice Assistant',
-  pageDescription: 'Voice AI assistant for farmers powered by Murf Falcon TTS (#VoiceForBharat)',
+  pageTitle: 'Kisan Mitra — आपका कृषि सहायक',
+  pageDescription:
+    'AI voice assistant for Indian farmers. Crop advice, pest control, and government scheme guidance — powered by Murf Falcon TTS. #VoiceForBharat',
 
-  supportsChatInput: true,
-  supportsVideoInput: true,
-  supportsScreenShare: true,
+  // Pure voice agent — no chat, camera, or screen sharing needed
+  supportsChatInput: false,
+  supportsVideoInput: false,
+  supportsScreenShare: false,
   isPreConnectBufferEnabled: false,
 
   logo: '/murf-logo.svg',
-  accent: '#6366F1',
   logoDark: '/murf-logo-dark.svg',
-  accentDark: '#818cf8',
-  startButtonText: 'Start talking',
+  accent: '#16a34a',
+  accentDark: '#4ade80',
+  startButtonText: 'Baat Karo / Start Call',
 
-  // optional: audio visualization configuration
-  // audioVisualizerType: 'bar',
-  // audioVisualizerColor: '#002cf2',
-  // audioVisualizerColorDark: '#1fd5f9',
-  // audioVisualizerColorShift: 0.3,
-  // audioVisualizerBarCount: 5,
-  // audioVisualizerType: 'radial',
-  // audioVisualizerRadialBarCount: 24,
-  // audioVisualizerRadialRadius: 100,
-  // audioVisualizerType: 'grid',
-  // audioVisualizerGridRowCount: 25,
-  // audioVisualizerGridColumnCount: 25,
-  // audioVisualizerType: 'wave',
-  // audioVisualizerWaveLineWidth: 3,
-  // audioVisualizerType: 'aura',
+  // Aura visualizer in crop-green
+  audioVisualizerType: 'aura',
+  audioVisualizerColor: '#16a34a',
+  audioVisualizerColorDark: '#4ade80',
+  audioVisualizerColorShift: 0.25,
 
   // agent dispatch configuration
   agentName: process.env.AGENT_NAME ?? undefined,

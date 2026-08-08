@@ -1,22 +1,66 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-function WelcomeImage() {
+/** Wheat stalk farming icon */
+function WheatIcon() {
   return (
     <svg
-      width="64"
-      height="64"
-      viewBox="0 0 64 64"
+      width="80"
+      height="80"
+      viewBox="0 0 80 80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="text-fg0 mb-4 size-16"
+      className="text-primary"
+      aria-hidden="true"
     >
-      <path
-        d="M15 24V40C15 40.7957 14.6839 41.5587 14.1213 42.1213C13.5587 42.6839 12.7956 43 12 43C11.2044 43 10.4413 42.6839 9.87868 42.1213C9.31607 41.5587 9 40.7957 9 40V24C9 23.2044 9.31607 22.4413 9.87868 21.8787C10.4413 21.3161 11.2044 21 12 21C12.7956 21 13.5587 21.3161 14.1213 21.8787C14.6839 22.4413 15 23.2044 15 24ZM22 5C21.2044 5 20.4413 5.31607 19.8787 5.87868C19.3161 6.44129 19 7.20435 19 8V56C19 56.7957 19.3161 57.5587 19.8787 58.1213C20.4413 58.6839 21.2044 59 22 59C22.7956 59 23.5587 58.6839 24.1213 58.1213C24.6839 57.5587 25 56.7957 25 56V8C25 7.20435 24.6839 6.44129 24.1213 5.87868C23.5587 5.31607 22.7956 5 22 5ZM32 13C31.2044 13 30.4413 13.3161 29.8787 13.8787C29.3161 14.4413 29 15.2044 29 16V48C29 48.7957 29.3161 49.5587 29.8787 50.1213C30.4413 50.6839 31.2044 51 32 51C32.7956 51 33.5587 50.6839 34.1213 50.1213C34.6839 49.5587 35 48.7957 35 48V16C35 15.2044 34.6839 14.4413 34.1213 13.8787C33.5587 13.3161 32.7956 13 32 13ZM42 21C41.2043 21 40.4413 21.3161 39.8787 21.8787C39.3161 22.4413 39 23.2044 39 24V40C39 40.7957 39.3161 41.5587 39.8787 42.1213C40.4413 42.6839 41.2043 43 42 43C42.7957 43 43.5587 42.6839 44.1213 42.1213C44.6839 41.5587 45 40.7957 45 40V24C45 23.2044 44.6839 22.4413 44.1213 21.8787C43.5587 21.3161 42.7957 21 42 21ZM52 17C51.2043 17 50.4413 17.3161 49.8787 17.8787C49.3161 18.4413 49 19.2044 49 20V44C49 44.7957 49.3161 45.5587 49.8787 46.1213C50.4413 46.6839 51.2043 47 52 47C52.7957 47 53.5587 46.6839 54.1213 46.1213C54.6839 45.5587 55 44.7957 55 44V20C55 19.2044 54.6839 18.4413 54.1213 17.8787C53.5587 17.3161 52.7957 17 52 17Z"
-        fill="currentColor"
-      />
+      {/* Stalk */}
+      <line x1="40" y1="72" x2="40" y2="22" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      {/* Grain pairs */}
+      <ellipse cx="30" cy="26" rx="9" ry="5" transform="rotate(-30 30 26)" fill="currentColor" opacity="0.85" />
+      <ellipse cx="50" cy="26" rx="9" ry="5" transform="rotate(30 50 26)" fill="currentColor" opacity="0.85" />
+      <ellipse cx="27" cy="36" rx="9" ry="5" transform="rotate(-30 27 36)" fill="currentColor" opacity="0.75" />
+      <ellipse cx="53" cy="36" rx="9" ry="5" transform="rotate(30 53 36)" fill="currentColor" opacity="0.75" />
+      <ellipse cx="25" cy="46" rx="9" ry="5" transform="rotate(-30 25 46)" fill="currentColor" opacity="0.60" />
+      <ellipse cx="55" cy="46" rx="9" ry="5" transform="rotate(30 55 46)" fill="currentColor" opacity="0.60" />
+      {/* Top ear */}
+      <ellipse cx="40" cy="19" rx="5" ry="8" fill="currentColor" opacity="0.90" />
     </svg>
   );
 }
+
+/** Animated mic permission warning */
+function MicPermissionWarning() {
+  return (
+    <div
+      className="mt-6 flex max-w-sm flex-col items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-center"
+      role="alert"
+      aria-live="assertive"
+      id="mic-permission-warning"
+    >
+      <span className="text-2xl" aria-hidden="true">🎙️</span>
+      <p className="text-sm font-semibold text-destructive">
+        Microphone ki permission chahiye
+      </p>
+      <p className="text-muted-foreground text-xs leading-relaxed">
+        Microphone access is required to talk to Kisan Mitra.
+        <br />
+        Please allow microphone access in your browser settings and reload the page.
+      </p>
+      <p className="text-muted-foreground text-xs">
+        Chrome: Click the 🔒 lock icon → Site settings → Microphone → Allow
+      </p>
+    </div>
+  );
+}
+
+const CAPABILITY_CHIPS = [
+  { emoji: '🌾', label: 'Crops & Sowing' },
+  { emoji: '🐛', label: 'Pest Control' },
+  { emoji: '📋', label: 'PM-KISAN Schemes' },
+  { emoji: '💧', label: 'Irrigation Tips' },
+];
 
 interface WelcomeViewProps {
   startButtonText: string;
@@ -28,36 +72,88 @@ export const WelcomeView = ({
   onStartCall,
   ref,
 }: React.ComponentProps<'div'> & WelcomeViewProps) => {
+  const [micBlocked, setMicBlocked] = useState(false);
+
+  // Check mic permission state on mount
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && navigator.permissions) {
+      navigator.permissions
+        .query({ name: 'microphone' as PermissionName })
+        .then((result) => {
+          setMicBlocked(result.state === 'denied');
+          result.onchange = () => setMicBlocked(result.state === 'denied');
+        })
+        .catch(() => {/* permissions API not supported */});
+    }
+  }, []);
+
   return (
     <div ref={ref}>
-      <section className="bg-background flex flex-col items-center justify-center text-center">
-        <WelcomeImage />
+      <section className="bg-background flex min-h-svh flex-col items-center justify-center px-4 py-16 text-center">
+        {/* Brand top */}
+        <div className="mb-2 flex items-center gap-2">
+          <span className="text-primary text-sm font-semibold tracking-wide uppercase">
+            AgriTech Innovations
+          </span>
+        </div>
 
-        <p className="text-foreground max-w-prose pt-1 leading-6 font-medium">
-          Chat live with your voice AI agent
+        {/* Wheat icon */}
+        <div className="mb-4 drop-shadow-md">
+          <WheatIcon />
+        </div>
+
+        {/* Bilingual heading */}
+        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
+          Namaste! <span aria-label="Folded hands">🙏</span>
+        </h1>
+        <p className="text-primary mt-1 text-lg font-semibold">नमस्ते! आपका स्वागत है</p>
+
+        {/* Sub-heading */}
+        <p className="text-muted-foreground mt-3 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base">
+          I am <strong className="text-foreground">Kisan Mitra</strong>, your AI farming voice
+          assistant. Ask me about crops, pests, irrigation, and government schemes.
         </p>
 
+        {/* Capability chips */}
+        <div className="mt-5 flex flex-wrap justify-center gap-2" role="list" aria-label="What I can help with">
+          {CAPABILITY_CHIPS.map(({ emoji, label }) => (
+            <span
+              key={label}
+              role="listitem"
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+            >
+              <span aria-hidden="true">{emoji}</span>
+              {label}
+            </span>
+          ))}
+        </div>
+
+        {/* Mic permission warning (conditional) */}
+        {micBlocked && <MicPermissionWarning />}
+
+        {/* Start CTA */}
         <Button
+          id="start-call-button"
           size="lg"
           onClick={onStartCall}
-          className="mt-6 w-64 rounded-full font-mono text-xs font-bold tracking-wider uppercase"
+          disabled={micBlocked}
+          aria-label="Start voice call with Kisan Mitra"
+          className="mt-8 w-64 rounded-full bg-primary px-8 py-3 text-sm font-bold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:shadow-xl active:scale-100 disabled:opacity-50"
         >
-          {startButtonText}
+          🌾 {startButtonText}
         </Button>
+
+        {/* Language note */}
+        <p className="text-muted-foreground mt-4 text-xs">
+          Supports Hindi · English · Hinglish
+        </p>
       </section>
 
+      {/* KVK helpline footer */}
       <div className="fixed bottom-5 left-0 flex w-full items-center justify-center">
-        <p className="text-muted-foreground max-w-prose pt-1 text-xs leading-5 font-normal text-pretty md:text-sm">
-          Need help getting set up? Check out the{' '}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://docs.livekit.io/agents/start/voice-ai/"
-            className="underline"
-          >
-            Voice AI quickstart
-          </a>
-          .
+        <p className="text-muted-foreground max-w-xs px-4 text-center text-xs leading-5">
+          Need expert help?{' '}
+          <span className="font-semibold">KVK Helpline: 1800-180-1551</span> (Free)
         </p>
       </div>
     </div>

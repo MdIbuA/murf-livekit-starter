@@ -16,42 +16,19 @@ const MotionMessage = motion.create(Shimmer);
 
 const BOTTOM_VIEW_MOTION_PROPS: MotionProps = {
   variants: {
-    visible: {
-      opacity: 1,
-      translateY: '0%',
-    },
-    hidden: {
-      opacity: 0,
-      translateY: '100%',
-    },
+    visible: { opacity: 1, translateY: '0%' },
+    hidden: { opacity: 0, translateY: '100%' },
   },
   initial: 'hidden',
   animate: 'visible',
   exit: 'hidden',
-  transition: {
-    duration: 0.3,
-    delay: 0.5,
-    ease: 'easeOut',
-  },
+  transition: { duration: 0.3, delay: 0.5, ease: 'easeOut' },
 };
 
 const CHAT_MOTION_PROPS: MotionProps = {
   variants: {
-    hidden: {
-      opacity: 0,
-      transition: {
-        ease: 'easeOut',
-        duration: 0.3,
-      },
-    },
-    visible: {
-      opacity: 1,
-      transition: {
-        delay: 0.2,
-        ease: 'easeOut',
-        duration: 0.3,
-      },
-    },
+    hidden: { opacity: 0, transition: { ease: 'easeOut', duration: 0.3 } },
+    visible: { opacity: 1, transition: { delay: 0.2, ease: 'easeOut', duration: 0.3 } },
   },
   initial: 'hidden',
   animate: 'visible',
@@ -60,22 +37,8 @@ const CHAT_MOTION_PROPS: MotionProps = {
 
 const SHIMMER_MOTION_PROPS: MotionProps = {
   variants: {
-    visible: {
-      opacity: 1,
-      transition: {
-        ease: 'easeIn',
-        duration: 0.5,
-        delay: 0.8,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      transition: {
-        ease: 'easeIn',
-        duration: 0.5,
-        delay: 0,
-      },
-    },
+    visible: { opacity: 1, transition: { ease: 'easeIn', duration: 0.5, delay: 0.8 } },
+    hidden: { opacity: 0, transition: { ease: 'easeIn', duration: 0.5, delay: 0 } },
   },
   initial: 'hidden',
   animate: 'visible',
@@ -101,35 +64,112 @@ export function Fade({ top = false, bottom = false, className }: FadeProps) {
   );
 }
 
+/** Kisan Mitra state badge — shows Listening / Speaking / Thinking */
+type AgentState = 'connecting' | 'initializing' | 'listening' | 'thinking' | 'speaking' | 'disconnected' | 'failed';
+
+interface StateBadgeConfig {
+  emoji: string;
+  hindiLabel: string;
+  englishLabel: string;
+  badgeClass: string;
+  dotClass: string;
+  animationClass?: string;
+}
+
+const STATE_CONFIG: Partial<Record<AgentState, StateBadgeConfig>> = {
+  listening: {
+    emoji: '🎤',
+    hindiLabel: 'Sun raha hoon…',
+    englishLabel: 'Listening',
+    badgeClass: 'border-primary/30 bg-primary/10 text-primary',
+    dotClass: 'bg-primary',
+    animationClass: 'km-pulse-listening',
+  },
+  speaking: {
+    emoji: '🗣️',
+    hindiLabel: 'Bol raha hoon…',
+    englishLabel: 'Speaking',
+    badgeClass: 'border-amber-400/40 bg-amber-400/15 text-amber-700 dark:text-amber-300',
+    dotClass: 'bg-amber-500',
+    animationClass: 'km-pulse-speaking',
+  },
+  thinking: {
+    emoji: '🌱',
+    hindiLabel: 'Soch raha hoon…',
+    englishLabel: 'Thinking',
+    badgeClass: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-700 dark:text-emerald-300',
+    dotClass: 'bg-emerald-500 animate-pulse',
+  },
+  initializing: {
+    emoji: '⏳',
+    hindiLabel: 'Taiyar ho raha hoon…',
+    englishLabel: 'Initializing',
+    badgeClass: 'border-muted-foreground/20 bg-muted text-muted-foreground',
+    dotClass: 'bg-muted-foreground animate-pulse',
+  },
+};
+
+function AgentStateBadge({ state }: { state: AgentState }) {
+  const config = STATE_CONFIG[state];
+  if (!config) return null;
+
+  return (
+    <motion.div
+      key={state}
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.3 }}
+      role="status"
+      aria-live="polite"
+      aria-label={`Agent is ${config.englishLabel}`}
+      className={cn(
+        'inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold shadow-sm',
+        config.badgeClass,
+        config.animationClass
+      )}
+    >
+      {/* Animated dot */}
+      <span
+        className={cn('h-2 w-2 rounded-full flex-shrink-0', config.dotClass)}
+        aria-hidden="true"
+      />
+      <span aria-hidden="true">{config.emoji}</span>
+      <span className="hidden sm:inline">{config.hindiLabel}</span>
+      <span className="sm:hidden">{config.englishLabel}</span>
+    </motion.div>
+  );
+}
+
 export interface AgentSessionView_01Props {
   /**
    * Message shown above the controls before the first chat message is sent.
    *
-   * @default 'Agent is listening, ask it a question'
+   * @default 'Kisan Mitra sun raha hai… / Agent is listening'
    */
   preConnectMessage?: string;
   /**
    * Enables or disables the chat toggle and transcript input controls.
    *
-   * @default true
+   * @default false
    */
   supportsChatInput?: boolean;
   /**
    * Enables or disables camera controls in the bottom control bar.
    *
-   * @default true
+   * @default false
    */
   supportsVideoInput?: boolean;
   /**
    * Enables or disables screen sharing controls in the bottom control bar.
    *
-   * @default true
+   * @default false
    */
   supportsScreenShare?: boolean;
   /**
    * Shows a pre-connect buffer state with a shimmer message before messages appear.
    *
-   * @default true
+   * @default false
    */
   isPreConnectBufferEnabled?: boolean;
 
@@ -156,11 +196,11 @@ export interface AgentSessionView_01Props {
 }
 
 export function AgentSessionView_01({
-  preConnectMessage = 'Agent is listening, ask it a question',
-  supportsChatInput = true,
-  supportsVideoInput = true,
-  supportsScreenShare = true,
-  isPreConnectBufferEnabled = true,
+  preConnectMessage = 'Kisan Mitra sun raha hai… / Agent is listening',
+  supportsChatInput = false,
+  supportsVideoInput = false,
+  supportsScreenShare = false,
+  isPreConnectBufferEnabled = false,
 
   audioVisualizerType,
   audioVisualizerColor,
@@ -184,9 +224,10 @@ export function AgentSessionView_01({
   const controls: AgentControlBarControls = {
     leave: true,
     microphone: true,
-    chat: supportsChatInput,
-    camera: supportsVideoInput,
-    screenShare: supportsScreenShare,
+    // Voice-only — no chat, camera, or screen share
+    chat: false,
+    camera: false,
+    screenShare: false,
   };
 
   useEffect(() => {
@@ -205,8 +246,17 @@ export function AgentSessionView_01({
       {...props}
     >
       <Fade top className="absolute inset-x-4 top-0 z-10 h-40" />
-      {/* transcript */}
 
+      {/* Kisan Mitra state badge — centered at top */}
+      <div className="absolute top-16 left-0 right-0 z-20 flex justify-center px-4 pt-2">
+        <AnimatePresence mode="wait">
+          {agentState && (
+            <AgentStateBadge state={agentState as AgentState} />
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Transcript (only when chat is open, kept for accessibility) */}
       <div className="absolute top-0 bottom-[135px] flex w-full flex-col md:bottom-[170px]">
         <AnimatePresence>
           {chatOpen && (
@@ -223,7 +273,8 @@ export function AgentSessionView_01({
           )}
         </AnimatePresence>
       </div>
-      {/* Tile layout */}
+
+      {/* Audio visualizer tile */}
       <TileLayout
         chatOpen={chatOpen}
         audioVisualizerType={audioVisualizerType}
@@ -236,12 +287,13 @@ export function AgentSessionView_01({
         audioVisualizerGridColumnCount={audioVisualizerGridColumnCount}
         audioVisualizerWaveLineWidth={audioVisualizerWaveLineWidth}
       />
-      {/* Bottom */}
+
+      {/* Bottom controls */}
       <motion.div
         {...BOTTOM_VIEW_MOTION_PROPS}
         className="absolute inset-x-3 bottom-0 z-50 md:inset-x-12"
       >
-        {/* Pre-connect message */}
+        {/* Pre-connect shimmer message */}
         {isPreConnectBufferEnabled && (
           <AnimatePresence>
             {messages.length === 0 && (
@@ -257,8 +309,15 @@ export function AgentSessionView_01({
             )}
           </AnimatePresence>
         )}
+
         <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
           <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" />
+
+          {/* Kisan Mitra help text above controls */}
+          <p className="text-muted-foreground mb-2 text-center text-xs">
+            🌾 Bolo, main sun raha hoon — Speak, I am listening
+          </p>
+
           <AgentControlBar
             variant="livekit"
             controls={controls}

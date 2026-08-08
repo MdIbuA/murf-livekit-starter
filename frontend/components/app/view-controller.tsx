@@ -12,34 +12,44 @@ const MotionSessionView = motion.create(AgentSessionView_01);
 
 const VIEW_MOTION_PROPS = {
   variants: {
-    visible: {
-      opacity: 1,
-    },
-    hidden: {
-      opacity: 0,
-    },
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
   },
-  initial: 'hidden',
-  animate: 'visible',
-  exit: 'hidden',
-  transition: {
-    duration: 0.5,
-    ease: 'linear',
-  },
+  initial: 'hidden' as const,
+  animate: 'visible' as const,
+  exit: 'hidden' as const,
+  transition: { duration: 0.5, ease: 'linear' as const },
 };
+
+/** Connecting spinner shown between clicking Start and the session becoming live */
+function ConnectingView() {
+  return (
+    <div className="flex min-h-svh flex-col items-center justify-center gap-5 px-4 text-center">
+      {/* Spinning wheat ring */}
+      <div className="relative flex h-20 w-20 items-center justify-center" aria-hidden="true">
+        <div className="absolute inset-0 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
+        <span className="text-3xl">🌾</span>
+      </div>
+      <div>
+        <p className="text-foreground text-lg font-semibold">Jod rahe hain…</p>
+        <p className="text-muted-foreground text-sm">Connecting you to Kisan Mitra</p>
+      </div>
+    </div>
+  );
+}
 
 interface ViewControllerProps {
   appConfig: AppConfig;
 }
 
 export function ViewController({ appConfig }: ViewControllerProps) {
-  const { isConnected, start } = useSessionContext();
+  const { isConnected, isConnecting, start } = useSessionContext();
   const { resolvedTheme } = useTheme();
 
   return (
     <AnimatePresence mode="wait">
-      {/* Welcome view */}
-      {!isConnected && (
+      {/* Ready — not yet started */}
+      {!isConnected && !isConnecting && (
         <MotionWelcomeView
           key="welcome"
           {...VIEW_MOTION_PROPS}
@@ -47,7 +57,15 @@ export function ViewController({ appConfig }: ViewControllerProps) {
           onStartCall={start}
         />
       )}
-      {/* Session view */}
+
+      {/* Connecting spinner */}
+      {isConnecting && !isConnected && (
+        <motion.div key="connecting" {...VIEW_MOTION_PROPS}>
+          <ConnectingView />
+        </motion.div>
+      )}
+
+      {/* Active session */}
       {isConnected && (
         <MotionSessionView
           key="session-view"

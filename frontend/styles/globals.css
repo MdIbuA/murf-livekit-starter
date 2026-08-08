@@ -4,79 +4,90 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Kisan Mitra – Earthy Green & Amber Design System */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.75rem;
+  /* Warm off-white / cream background */
+  --background: oklch(0.98 0.012 100);
+  --foreground: oklch(0.18 0.04 140);
+  --card: oklch(0.96 0.015 100);
+  --card-foreground: oklch(0.18 0.04 140);
+  --popover: oklch(0.98 0.012 100);
+  --popover-foreground: oklch(0.18 0.04 140);
+  /* Primary – deep forest green */
+  --primary: oklch(0.42 0.14 145);
+  --primary-foreground: oklch(0.98 0.01 100);
+  /* Secondary – soft sage green */
+  --secondary: oklch(0.88 0.06 140);
+  --secondary-foreground: oklch(0.28 0.10 145);
+  /* Muted – warm beige */
+  --muted: oklch(0.94 0.02 90);
+  --muted-foreground: oklch(0.52 0.06 130);
+  /* Accent – golden amber */
+  --accent: oklch(0.85 0.12 80);
+  --accent-foreground: oklch(0.22 0.08 60);
+  --destructive: oklch(0.57 0.24 27);
+  /* Border – light earthy green */
+  --border: oklch(0.85 0.05 140);
+  --input: oklch(0.88 0.04 140);
+  --ring: oklch(0.55 0.14 145);
+  --chart-1: oklch(0.48 0.18 145);
+  --chart-2: oklch(0.68 0.16 80);
+  --chart-3: oklch(0.58 0.14 120);
+  --chart-4: oklch(0.76 0.14 60);
+  --chart-5: oklch(0.55 0.20 30);
+  --sidebar: oklch(0.94 0.02 100);
+  --sidebar-foreground: oklch(0.18 0.04 140);
+  --sidebar-primary: oklch(0.42 0.14 145);
+  --sidebar-primary-foreground: oklch(0.98 0.01 100);
+  --sidebar-accent: oklch(0.88 0.06 140);
+  --sidebar-accent-foreground: oklch(0.28 0.10 145);
+  --sidebar-border: oklch(0.85 0.05 140);
+  --sidebar-ring: oklch(0.55 0.14 145);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.269 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.371 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  /* Deep forest night */
+  --background: oklch(0.13 0.03 150);
+  --foreground: oklch(0.94 0.04 100);
+  --card: oklch(0.18 0.04 148);
+  --card-foreground: oklch(0.94 0.04 100);
+  --popover: oklch(0.20 0.04 148);
+  --popover-foreground: oklch(0.94 0.04 100);
+  /* Primary – bright fresh green */
+  --primary: oklch(0.72 0.20 145);
+  --primary-foreground: oklch(0.10 0.04 150);
+  /* Secondary – dark sage */
+  --secondary: oklch(0.25 0.06 148);
+  --secondary-foreground: oklch(0.88 0.06 140);
+  --muted: oklch(0.22 0.04 148);
+  --muted-foreground: oklch(0.62 0.08 140);
+  /* Accent – warm golden amber in dark */
+  --accent: oklch(0.30 0.08 80);
+  --accent-foreground: oklch(0.90 0.12 80);
+  --destructive: oklch(0.70 0.19 22);
   --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.65 0.18 145);
+  --chart-1: oklch(0.60 0.22 145);
+  --chart-2: oklch(0.76 0.18 80);
+  --chart-3: oklch(0.65 0.16 120);
+  --chart-4: oklch(0.80 0.16 60);
+  --chart-5: oklch(0.65 0.22 30);
+  --sidebar: oklch(0.18 0.04 148);
+  --sidebar-foreground: oklch(0.94 0.04 100);
+  --sidebar-primary: oklch(0.72 0.20 145);
+  --sidebar-primary-foreground: oklch(0.10 0.04 150);
+  --sidebar-accent: oklch(0.25 0.06 148);
+  --sidebar-accent-foreground: oklch(0.88 0.06 140);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar-ring: oklch(0.65 0.18 145);
 }
 
 @theme inline {
   --font-sans:
-    var(--font-public-sans), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    var(--font-noto-sans), var(--font-public-sans), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --font-mono:
     var(--font-commit-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
@@ -121,4 +132,24 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Kisan Mitra – State badge animations */
+@keyframes km-pulse-ring {
+  0% { box-shadow: 0 0 0 0 oklch(0.55 0.18 145 / 0.5); }
+  70% { box-shadow: 0 0 0 10px oklch(0.55 0.18 145 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.55 0.18 145 / 0); }
+}
+
+@keyframes km-amber-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.km-pulse-listening {
+  animation: km-pulse-ring 1.4s ease-out infinite;
+}
+
+.km-pulse-speaking {
+  animation: km-amber-pulse 1s ease-in-out infinite;
 }
