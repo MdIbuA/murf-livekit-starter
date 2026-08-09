@@ -29,32 +29,32 @@ logger = logging.getLogger("agent")
 load_dotenv(".env.local")
 
 SYSTEM_PROMPT = """IDENTITY
-You are Kisan Mitra, a friendly, respectful, and expert AI farming voice assistant built for Indian farmers by AgriTech Innovations, powered by Murf Falcon voice technology.
+You are Kisan Mitra, a friendly, respectful, and expert AI farming voice assistant built for Tamil Nadu farmers by AgriTech Innovations, powered by Murf Falcon voice technology.
 
 OBJECTIVES
 A successful call achieves one of the following objectives:
-1. Provide accurate, practical crop health, pest control, or seasonal irrigation advice to the farmer.
-2. Guide the farmer on official agricultural welfare schemes like PM-KISAN or Fasal Bima Yojana documentation requirements.
+1. Provide accurate, practical crop health, pest control, or seasonal irrigation advice to Tamil farmers.
+2. Guide the farmer on official agricultural welfare schemes like PM-KISAN, Kalaignar Centenary Scheme, or Fasal Bima Yojana documentation requirements.
 3. Identify out-of-scope, unverified, or high-risk requests and gracefully escalate them to a Krishi Vigyan Kendra (KVK) agricultural officer.
-4. Greet returning farmers by name, remember their crops and location, and ask for permission before saving any new facts.
+4. Greet returning farmers by name in Tamil / Tanglish, remember their crops and district, and ask for permission before saving any new facts.
 
 KNOWLEDGE & MEMORY
 You have access to a database of farmer profiles via function tools (`lookup_farmer_profile`, `save_farmer_profile`, `forget_farmer_profile`).
-You know general crop cultivation practices, seasonal sowing guidance, organic and chemical fertilizer application guidelines, and official government scheme details.
+You know general crop cultivation practices (Paddy/Nel, Sugarcane/Karumbu, Cotton, Groundnut/Verkadalai, Banana/Vazhai), seasonal sowing guidance, organic and chemical fertilizer application guidelines, and official government scheme details.
 Your knowledge stops at live daily mandi market prices without verified source/date, legal land title disputes, chemical toxicity treatment or antidotes for humans/livestock, and direct bank loan approvals.
 
 HARD CONSENT RULES FOR SAVING DATA (DAY 4 MANDATE)
-- BEFORE saving any user facts (name, crops, district, land size, irrigation), you MUST ASK FOR EXPLICIT CONSENT.
-  Example: "Kya main aapki ye jankari (crop/district) Kisan Mitra database me save kar loon taaki me agli baar aapko behter salah de sakoon?"
-- ONLY call `save_farmer_profile` with `permission_granted=True` if the farmer explicitly agrees (e.g. says "Haan", "Yes", "Save kar lo").
-- If the farmer declines or says no (e.g. "Nahi", "Don't save"), DO NOT call `save_farmer_profile` with permission_granted=True. Confirm to the user: "Theek hai, main aapki jankari save nahi kar raha hoon."
+- BEFORE saving any user facts (name, crops, district, land size, irrigation), you MUST ASK FOR EXPLICIT CONSENT in Tanglish/Tamil.
+  Example: "Naan unga details (crop/district) Kisan Mitra database la save pannikava, adutha thadava help panna vasathiya irukkum?"
+- ONLY call `save_farmer_profile` with `permission_granted=True` if the farmer explicitly agrees (e.g. says "Aama", "Haan", "Yes", "Save pannunga").
+- If the farmer declines or says no (e.g. "Illa", "No", "Save panna vendam"), DO NOT call `save_farmer_profile` with permission_granted=True. Confirm to the user: "Seri ayya, naan unga details save panni vaikka villai."
 - If the farmer asks you to delete their data or forget them, call `forget_farmer_profile`.
 
 LANGUAGE & NATIVE SCRIPT
-Always write every language in its own native script:
-- Hindi → Devanagari script (e.g. नमस्ते, गेहूँ, छिड़काव), never romanized when speaking pure Hindi.
-- Hinglish / English → Standard script (e.g. "Namaste, wheat crop ke liye...").
-- Mirror the user's language, code-mix, register, and formality completely.
+Always write every language in its own script:
+- Pure Tamil → Tamil script (e.g. வணக்கம், நெல் பயிர், உரம்), when speaking in pure Tamil.
+- Tanglish / English → Standard Roman script (e.g. "Vanakkam ayya, paddy crop ku...").
+- Mirror the user's language, code-mix, register, and formality completely (Tanglish, Tamil, or Indian English).
 
 GUARDRAILS
 - HARD REFUSALS:
@@ -66,7 +66,7 @@ GUARDRAILS
   2. Never claim official government authority or sanctioning power.
 - ESCALATION SCRIPT:
   When refusing out-of-scope or high-risk requests (e.g. unverified daily prices, loan approvals, severe crop disease outbreaks), state:
-  "Main is specific request ke liye aapko official Krishi Vigyan Kendra (KVK) expert se connect hone ki salah dunga. Aap KVK national helpline 1800-180-1551 par call kar sakte hain."
+  "Indha specific request kaga naan ungalukku official Krishi Vigyan Kendra (KVK) expert kitta pesalaam nu solren. KVK national helpline 1800-180-1551 ku call pannunga."
 
 STYLE
 - Keep all spoken replies under 20 words per sentence.
@@ -112,15 +112,15 @@ class Assistant(Agent):
         permission_granted: bool = False
     ) -> str:
         """Saves or updates a farmer's profile in the SQLite database.
-        HARD RULE: You MUST ask the caller for permission before saving ('Kya main aapki ye jankari save kar loon?')
+        HARD RULE: You MUST ask the caller for permission before saving ('Naan unga details save pannikava?')
         and ONLY set permission_granted=True if the caller explicitly agreed.
 
         Args:
-            name: Farmer's name (e.g. Ramesh)
-            district: District or state location (e.g. Ludhiana, Punjab)
-            crops_grown: Main crops grown (e.g. Wheat, Rice)
+            name: Farmer's name (e.g. Muthu, Ramesh)
+            district: District or state location (e.g. Thanjavur, Madurai)
+            crops_grown: Main crops grown (e.g. Paddy/Nel, Sugarcane/Karumbu, Cotton)
             land_size: Size of farm land (e.g. 5 acres)
-            irrigation_type: Canal, Tube well, Rainfed, etc.
+            irrigation_type: Canal, Borewell, Rainfed, Drip, etc.
             last_topic: Topic or crop query discussed in this call
             permission_granted: Set to True ONLY if the farmer explicitly consented to saving their information.
         """
@@ -166,23 +166,17 @@ async def my_agent(ctx: JobContext):
         "room": ctx.room.name,
     }
 
-    # Determine caller user_id from room or default caller ID
     caller_id = "farmer_001"
-    
-    # Check if caller has a saved profile in SQLite database
     existing_profile = db.get_farmer(caller_id)
 
-    # Set up LiveKit AgentSession with Day 4 requirements:
-    # stt: deepgram nova-3 multi
-    # llm: gemini-3.5-flash-lite
-    # tts: murf Anisha voice
+    # Set up LiveKit AgentSession with Tamil/Tanglish + Murf Venkat voice
     session = AgentSession(
         stt=deepgram.STT(model="nova-3", language="multi"),
         llm=google.LLM(
             model="gemini-3.5-flash-lite",
         ),
         tts=murf.TTS(
-            voice="Anisha",
+            voice="Venkat",
             style="Conversation",
             tokenizer=tokenize.basic.SentenceTokenizer(min_sentence_len=2),
             text_pacing=True,
@@ -192,7 +186,6 @@ async def my_agent(ctx: JobContext):
         preemptive_generation=True,
     )
 
-    # Initialize assistant with caller_id
     assistant = Assistant(current_user_id=caller_id)
 
     await session.start(
@@ -211,18 +204,18 @@ async def my_agent(ctx: JobContext):
 
     await ctx.connect()
 
-    # Day 4 Requirement: Welcome returning callers by name and reference previous topic
+    # Tamil / Tanglish Returning Caller Greeting
     if existing_profile and existing_profile.get("name"):
         name = existing_profile.get("name")
-        crop = existing_profile.get("crops_grown", "fasal")
+        crop = existing_profile.get("crops_grown", "payir")
         last_topic = existing_profile.get("last_topic")
         
         if last_topic:
-            greeting = f"Namaste {name} ji! Kisan Mitra me dobara swagat hai. Last time humne {last_topic} ke baare me baat ki thi. Aaj aapki kaise madad karoon?"
+            greeting = f"Vanakkam {name} ayya! Kisan Mitra ku thirumba varuga. Ponamurai humne {last_topic} pathi pesinom. Innikku enna uthavi venum?"
         else:
-            greeting = f"Namaste {name} ji! Kisan Mitra me dobara swagat hai. Aapki {crop} ki fasal kaisi chal rahi hai?"
+            greeting = f"Vanakkam {name} ayya! Kisan Mitra ku thirumba varuga. Ungal {crop} payir eppadi irukku?"
     else:
-        greeting = "Namaste! Main Kisan Mitra hoon, aapka AI krishi sahayak. Aapka naam kya hai aur aap kahan se bol rahe hain?"
+        greeting = "Vanakkam! Naan Kisan Mitra, ungal AI vivasayam sahayagar. Ungal peyar enna, edhu ungal mavattam?"
 
     await session.say(greeting)
 

@@ -41,12 +41,12 @@ function MicPermissionWarning() {
     >
       <span className="text-2xl" aria-hidden="true">🎙️</span>
       <p className="text-sm font-semibold text-destructive">
-        Microphone ki permission chahiye
+        Microphone permission thevai
       </p>
       <p className="text-muted-foreground text-xs leading-relaxed">
-        Microphone access is required to talk to Kisan Mitra.
+        Kisan Mitra ungal kuralai ketka microphone access thevai.
         <br />
-        Please allow microphone access in your browser settings and reload the page.
+        Browser settings la microphone allow pannitu page reload pannunga.
       </p>
       <p className="text-muted-foreground text-xs">
         Chrome: Click the 🔒 lock icon → Site settings → Microphone → Allow
@@ -56,10 +56,10 @@ function MicPermissionWarning() {
 }
 
 const CAPABILITY_CHIPS = [
-  { emoji: '🌾', label: 'Crops & Sowing' },
-  { emoji: '🐛', label: 'Pest Control' },
-  { emoji: '📋', label: 'PM-KISAN Schemes' },
-  { emoji: '💧', label: 'Irrigation Tips' },
+  { emoji: '🌾', label: 'Piyirgal (Crops)' },
+  { emoji: '🐛', label: 'Poochi Kattupadu' },
+  { emoji: '📋', label: 'PM-KISAN Thittam' },
+  { emoji: '💧', label: 'Neer Pasanathevai' },
 ];
 
 interface WelcomeViewProps {
@@ -102,16 +102,16 @@ export const WelcomeView = ({
           <WheatIcon />
         </div>
 
-        {/* Bilingual heading */}
+        {/* Tamil & Tanglish heading */}
         <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
-          Namaste! <span aria-label="Folded hands">🙏</span>
+          Vanakkam! <span aria-label="Folded hands">🙏</span>
         </h1>
-        <p className="text-primary mt-1 text-lg font-semibold">नमस्ते! आपका स्वागत है</p>
+        <p className="text-primary mt-1 text-lg font-semibold">வணக்கம்! நல்வரவு</p>
 
         {/* Sub-heading */}
         <p className="text-muted-foreground mt-3 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base">
-          I am <strong className="text-foreground">Kisan Mitra</strong>, your AI farming voice
-          assistant. Ask me about crops, pests, irrigation, and government schemes.
+          I am <strong className="text-foreground">Kisan Mitra</strong>, ungal AI vivasayam sahayagar.
+          Ask me about crops, pests, irrigation, and government schemes in Tamil or Tanglish.
         </p>
 
         {/* Capability chips */}
@@ -145,15 +145,14 @@ export const WelcomeView = ({
 
         {/* Language note */}
         <p className="text-muted-foreground mt-4 text-xs">
-          Supports Hindi · English · Hinglish
+          Supports Tamil · Tanglish · English
         </p>
       </section>
 
       {/* KVK helpline footer */}
       <div className="fixed bottom-5 left-0 flex w-full items-center justify-center">
         <p className="text-muted-foreground max-w-xs px-4 text-center text-xs leading-5">
-          Need expert help?{' '}
-          <span className="font-semibold">KVK Helpline: 1800-180-1551</span> (Free)
+          Uthavi thevaiya? <span className="font-semibold">KVK Helpline: 1800-180-1551</span> (Free)
         </p>
       </div>
     </div>

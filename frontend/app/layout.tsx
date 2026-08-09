@@ -1,4 +1,4 @@
-import { Noto_Sans, Public_Sans } from 'next/font/google';
+import { Noto_Sans, Noto_Sans_Tamil, Public_Sans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { headers } from 'next/headers';
 import { ThemeProvider } from '@/components/app/theme-provider';
@@ -7,9 +7,15 @@ import { cn } from '@/lib/shadcn/utils';
 import { getAppConfig, getStyles } from '@/lib/utils';
 import '@/styles/globals.css';
 
+const notoSansTamil = Noto_Sans_Tamil({
+  variable: '--font-noto-sans-tamil',
+  subsets: ['tamil'],
+  weight: ['400', '500', '600', '700'],
+});
+
 const notoSans = Noto_Sans({
   variable: '--font-noto-sans',
-  subsets: ['latin', 'devanagari'],
+  subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
 });
 
@@ -56,9 +62,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html
-      lang="en"
+      lang="ta"
       suppressHydrationWarning
       className={cn(
+        notoSansTamil.variable,
         notoSans.variable,
         publicSans.variable,
         commitMono.variable,
@@ -67,10 +74,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     >
       <head>
         {styles && <style>{styles}</style>}
-        <title>Kisan Mitra — आपका कृषि सहायक</title>
+        <title>Kisan Mitra — உங்கள் விவசாய உதவியாளர்</title>
         <meta
           name="description"
-          content="AI voice assistant for Indian farmers. Crop advice, pest control & government scheme guidance. #VoiceForBharat"
+          content="AI voice assistant for Tamil Nadu farmers. Crop advice, pest control & government scheme guidance. #VoiceForBharat"
         />
       </head>
       <body className="overflow-x-hidden">
@@ -103,7 +110,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               <span className="text-primary text-base font-bold tracking-tight">
                 Kisan Mitra
               </span>
-              <span className="text-muted-foreground text-xs">| आपका कृषि सहायक</span>
+              <span className="text-muted-foreground text-xs">| உங்கள் விவசாய உதவியாளர்</span>
             </div>
             <span className="text-muted-foreground font-mono text-xs font-semibold tracking-wider uppercase">
               Powered by{' '}

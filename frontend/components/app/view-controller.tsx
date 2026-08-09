@@ -31,7 +31,7 @@ function ConnectingView() {
         <span className="text-3xl">🌾</span>
       </div>
       <div>
-        <p className="text-foreground text-lg font-semibold">Jod rahe hain…</p>
+        <p className="text-foreground text-lg font-semibold">Inaigirathu… / Connecting</p>
         <p className="text-muted-foreground text-sm">Connecting you to Kisan Mitra</p>
       </div>
     </div>

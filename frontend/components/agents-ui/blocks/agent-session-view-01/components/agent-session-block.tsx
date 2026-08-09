@@ -64,12 +64,12 @@ export function Fade({ top = false, bottom = false, className }: FadeProps) {
   );
 }
 
-/** Kisan Mitra state badge — shows Listening / Speaking / Thinking */
+/** Kisan Mitra state badge — shows Ketkiren / Pesukiren / Yosikiren in Tanglish & English */
 type AgentState = 'connecting' | 'initializing' | 'listening' | 'thinking' | 'speaking' | 'disconnected' | 'failed';
 
 interface StateBadgeConfig {
   emoji: string;
-  hindiLabel: string;
+  tanglishLabel: string;
   englishLabel: string;
   badgeClass: string;
   dotClass: string;
@@ -79,7 +79,7 @@ interface StateBadgeConfig {
 const STATE_CONFIG: Partial<Record<AgentState, StateBadgeConfig>> = {
   listening: {
     emoji: '🎤',
-    hindiLabel: 'Sun raha hoon…',
+    tanglishLabel: 'Ketkiren…',
     englishLabel: 'Listening',
     badgeClass: 'border-primary/30 bg-primary/10 text-primary',
     dotClass: 'bg-primary',
@@ -87,7 +87,7 @@ const STATE_CONFIG: Partial<Record<AgentState, StateBadgeConfig>> = {
   },
   speaking: {
     emoji: '🗣️',
-    hindiLabel: 'Bol raha hoon…',
+    tanglishLabel: 'Pesukiren…',
     englishLabel: 'Speaking',
     badgeClass: 'border-amber-400/40 bg-amber-400/15 text-amber-700 dark:text-amber-300',
     dotClass: 'bg-amber-500',
@@ -95,14 +95,14 @@ const STATE_CONFIG: Partial<Record<AgentState, StateBadgeConfig>> = {
   },
   thinking: {
     emoji: '🌱',
-    hindiLabel: 'Soch raha hoon…',
+    tanglishLabel: 'Yosikiren…',
     englishLabel: 'Thinking',
     badgeClass: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-700 dark:text-emerald-300',
     dotClass: 'bg-emerald-500 animate-pulse',
   },
   initializing: {
     emoji: '⏳',
-    hindiLabel: 'Taiyar ho raha hoon…',
+    tanglishLabel: 'Thuvangugirathu…',
     englishLabel: 'Initializing',
     badgeClass: 'border-muted-foreground/20 bg-muted text-muted-foreground',
     dotClass: 'bg-muted-foreground animate-pulse',
@@ -135,7 +135,7 @@ function AgentStateBadge({ state }: { state: AgentState }) {
         aria-hidden="true"
       />
       <span aria-hidden="true">{config.emoji}</span>
-      <span className="hidden sm:inline">{config.hindiLabel}</span>
+      <span className="hidden sm:inline">{config.tanglishLabel}</span>
       <span className="sm:hidden">{config.englishLabel}</span>
     </motion.div>
   );
@@ -145,13 +145,13 @@ export interface AgentSessionView_01Props {
   /**
    * Message shown above the controls before the first chat message is sent.
    *
-   * @default 'Kisan Mitra sun raha hai… / Agent is listening'
+   * @default 'Kisan Mitra ketkiren… / Agent is listening'
    */
   preConnectMessage?: string;
   /**
    * Enables or disables the chat toggle and transcript input controls.
    *
-   * @default false
+   * @default true
    */
   supportsChatInput?: boolean;
   /**
@@ -196,8 +196,8 @@ export interface AgentSessionView_01Props {
 }
 
 export function AgentSessionView_01({
-  preConnectMessage = 'Kisan Mitra sun raha hai… / Agent is listening',
-  supportsChatInput = false,
+  preConnectMessage = 'Kisan Mitra ketkiren… / Agent is listening',
+  supportsChatInput = true,
   supportsVideoInput = false,
   supportsScreenShare = false,
   isPreConnectBufferEnabled = false,
@@ -224,7 +224,6 @@ export function AgentSessionView_01({
   const controls: AgentControlBarControls = {
     leave: true,
     microphone: true,
-    // Chat enabled; camera and screen share off (voice farming agent)
     chat: supportsChatInput,
     camera: false,
     screenShare: false,
@@ -256,7 +255,7 @@ export function AgentSessionView_01({
         </AnimatePresence>
       </div>
 
-      {/* Transcript (only when chat is open, kept for accessibility) */}
+      {/* Transcript (only when chat is open) */}
       <div className="absolute top-0 bottom-[135px] flex w-full flex-col md:bottom-[170px]">
         <AnimatePresence>
           {chatOpen && (
@@ -313,9 +312,9 @@ export function AgentSessionView_01({
         <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
           <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" />
 
-          {/* Kisan Mitra help text above controls */}
+          {/* Kisan Mitra help text above controls in Tanglish & English */}
           <p className="text-muted-foreground mb-2 text-center text-xs">
-            🌾 Bolo, main sun raha hoon — Speak, I am listening
+            🌾 Pesunga, naan ketkiren — Speak, I am listening
           </p>
 
           <AgentControlBar

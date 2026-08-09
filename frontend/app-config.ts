@@ -34,9 +34,9 @@ export interface AppConfig {
 
 export const APP_CONFIG_DEFAULTS: AppConfig = {
   companyName: 'Kisan Mitra',
-  pageTitle: 'Kisan Mitra — आपका कृषि सहायक',
+  pageTitle: 'Kisan Mitra — உங்கள் விவசாய உதவியாளர்',
   pageDescription:
-    'AI voice assistant for Indian farmers. Crop advice, pest control, and government scheme guidance — powered by Murf Falcon TTS. #VoiceForBharat',
+    'AI voice assistant for Tamil Nadu farmers. Crop advice, pest control, and government scheme guidance — powered by Murf Falcon TTS. #VoiceForBharat',
 
   // Chat input enabled so users can type questions in any language
   supportsChatInput: true,
@@ -48,7 +48,7 @@ export const APP_CONFIG_DEFAULTS: AppConfig = {
   logoDark: '/murf-logo-dark.svg',
   accent: '#16a34a',
   accentDark: '#4ade80',
-  startButtonText: 'Baat Karo / Start Call',
+  startButtonText: 'Pesalam / Start Call',
 
   // Aura visualizer in crop-green
   audioVisualizerType: 'aura',
