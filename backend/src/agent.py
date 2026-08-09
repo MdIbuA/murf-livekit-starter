@@ -176,7 +176,7 @@ async def my_agent(ctx: JobContext):
             model="gemini-3.5-flash-lite",
         ),
         tts=murf.TTS(
-            voice="Venkat",
+            voice="Anisha",
             style="Conversation",
             tokenizer=tokenize.basic.SentenceTokenizer(min_sentence_len=2),
             text_pacing=True,
