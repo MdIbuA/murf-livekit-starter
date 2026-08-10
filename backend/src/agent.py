@@ -20,9 +20,10 @@ from livekit.agents import (
 from livekit.plugins import deepgram, google, murf, noise_cancellation, silero
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
-# Import SQLite database module
+# Import SQLite database module and Day-5 real-data tools
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src import db
+from src.tools import fetch_weather, fetch_market_price
 
 logger = logging.getLogger("agent")
 
@@ -33,15 +34,22 @@ You are Kisan Mitra, a friendly, respectful, and expert AI farming voice assista
 
 OBJECTIVES
 A successful call achieves one of the following objectives:
-1. Provide accurate, practical crop health, pest control, or seasonal irrigation advice to Tamil farmers.
-2. Guide the farmer on official agricultural welfare schemes like PM-KISAN, Kalaignar Centenary Scheme, or Fasal Bima Yojana documentation requirements.
-3. Identify out-of-scope, unverified, or high-risk requests and gracefully escalate them to a Krishi Vigyan Kendra (KVK) agricultural officer.
-4. Greet returning farmers by name in Tamil / Tanglish, remember their crops and district, and ask for permission before saving any new facts.
+1. Provide accurate, practical crop health, pest control, seasonal irrigation, spray timing, and harvest advice to Tamil farmers using real weather data.
+2. Give verified, up-to-date mandi market prices for crops so farmers can make informed selling decisions.
+3. Guide the farmer on official agricultural welfare schemes like PM-KISAN, Kalaignar Centenary Scheme, or Fasal Bima Yojana documentation requirements.
+4. Identify out-of-scope or high-risk requests and gracefully escalate them to a Krishi Vigyan Kendra (KVK) agricultural officer.
+5. Greet returning farmers by name in Tamil / Tanglish, remember their crops and district, and ask for permission before saving any new facts.
 
 KNOWLEDGE & MEMORY
-You have access to a database of farmer profiles via function tools (`lookup_farmer_profile`, `save_farmer_profile`, `forget_farmer_profile`).
+You have access to the following function tools:
+- `lookup_farmer_profile`, `save_farmer_profile`, `forget_farmer_profile` — farmer profile database
+- `get_weather_forecast` — fetches a REAL 3-day weather forecast for any Tamil Nadu district from Open-Meteo (IMD data). Use this whenever a farmer asks about rain, weather, spray timing, or harvest timing.
+- `get_crop_market_price` — fetches LIVE mandi prices from data.gov.in Agmarknet (official government source). Use this whenever a farmer asks about selling price, market rate, or mandi daam.
+
+IMPORTANT: When you use `get_weather_forecast` or `get_crop_market_price`, always cite the source and date in your spoken reply. Never invent prices or weather — always call the tool first.
+
 You know general crop cultivation practices (Paddy/Nel, Sugarcane/Karumbu, Cotton, Groundnut/Verkadalai, Banana/Vazhai), seasonal sowing guidance, organic and chemical fertilizer application guidelines, and official government scheme details.
-Your knowledge stops at live daily mandi market prices without verified source/date, legal land title disputes, chemical toxicity treatment or antidotes for humans/livestock, and direct bank loan approvals.
+Your knowledge stops at legal land title disputes, chemical toxicity treatment or antidotes for humans/livestock, and direct bank loan approvals.
 
 HARD CONSENT RULES FOR SAVING DATA (DAY 4 MANDATE)
 - BEFORE saving any user facts (name, crops, district, land size, irrigation), you MUST ASK FOR EXPLICIT CONSENT in Tanglish/Tamil.
@@ -58,14 +66,15 @@ Always write every language in its own script:
 
 GUARDRAILS
 - HARD REFUSALS:
-  1. Never state a live market or mandi price as current fact without an official source, location, and date. Suggest checking the official Agmarknet portal.
-  2. Never approve, guarantee, or process bank loans, subsidies, or government scheme payouts.
-  3. Never diagnose human or livestock chemical poisoning or recommend medical/antidote treatments.
+  1. For market prices: ALWAYS use `get_crop_market_price` tool to get official data. Never guess a price. If the tool returns no data, suggest agmarknet.gov.in.
+  2. For weather questions: ALWAYS use `get_weather_forecast` tool. Never guess weather.
+  3. Never approve, guarantee, or process bank loans, subsidies, or government scheme payouts.
+  4. Never diagnose human or livestock chemical poisoning or recommend medical/antidote treatments.
 - NEVER CLAIMS:
   1. Never claim guaranteed crop yields or financial returns.
   2. Never claim official government authority or sanctioning power.
 - ESCALATION SCRIPT:
-  When refusing out-of-scope or high-risk requests (e.g. unverified daily prices, loan approvals, severe crop disease outbreaks), state:
+  When refusing out-of-scope or high-risk requests (e.g. loan approvals, severe disease outbreaks, legal disputes), state:
   "Indha specific request kaga naan ungalukku official Krishi Vigyan Kendra (KVK) expert kitta pesalaam nu solren. KVK national helpline 1800-180-1551 ku call pannunga."
 
 STYLE
@@ -147,6 +156,45 @@ class Assistant(Agent):
         if deleted:
             return "SUCCESS: All your data has been deleted from Kisan Mitra database."
         return "No existing record was found to delete."
+
+    # ------------------------------------------------------------------
+    # DAY 5 — Real-Data Tools
+    # ------------------------------------------------------------------
+
+    @function_tool
+    async def get_weather_forecast(self, context: RunContext, district: str, days: int = 3) -> str:
+        """Fetches a real weather forecast for a Tamil Nadu district from Open-Meteo (IMD data).
+
+        ALWAYS call this tool when the farmer asks about:
+        - Will it rain? / Mazhai varuma? / Rain forecast
+        - Should I spray today? / Innikku spray panlama?
+        - Is it safe to harvest this week?
+        - Any question involving weather, temperature, or rainfall.
+
+        Args:
+            district: Tamil Nadu district name (e.g. Thanjavur, Madurai, Coimbatore, Chennai)
+            days: Number of forecast days (1-7, default 3)
+        """
+        result = await fetch_weather(district=district, days=days)
+        return result["summary"]
+
+    @function_tool
+    async def get_crop_market_price(self, context: RunContext, crop: str, district: str = "Tamil Nadu") -> str:
+        """Fetches live mandi (wholesale market) prices for a crop from data.gov.in Agmarknet.
+        This is the OFFICIAL government market price source — always use this instead of guessing.
+
+        ALWAYS call this tool when the farmer asks about:
+        - Market price / Mandi daam / Vilai enna?
+        - When to sell? / Eppo sell pannanum?
+        - Is the price good now? / Price nallaa irukkaa?
+        - Any question about current crop selling price.
+
+        Args:
+            crop: Crop name in English or Tamil (e.g. paddy, nel, cotton, sugarcane, groundnut, banana, onion)
+            district: District or state for price lookup (default: Tamil Nadu)
+        """
+        result = await fetch_market_price(crop=crop, state="Tamil Nadu")
+        return result["summary"]
 
 
 server = AgentServer()
