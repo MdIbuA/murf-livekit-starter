@@ -251,7 +251,7 @@ async def my_agent(ctx: JobContext):
             model="gemini-3.5-flash-lite",
         ),
         tts=murf.TTS(
-            voice="Venkat",   # Native Tamil voice (ta-IN) — gives authentic Tamil accent
+            voice="Anisha",   # Murf Falcon multilingual voice
             style="Conversation",
             tokenizer=tokenize.basic.SentenceTokenizer(min_sentence_len=2),
             text_pacing=True,
