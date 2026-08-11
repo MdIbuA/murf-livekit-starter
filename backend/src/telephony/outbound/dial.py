@@ -74,11 +74,17 @@ def main() -> None:
     #         "Include the country code and a leading +, e.g. +15551234567."
     #     )
 
+    target = args.to.strip()
+    if target.startswith("sip:"):
+        target = target[4:]
+    if "@" in target:
+        target = target.split("@")[0]
+
     room_name = args.room or f"outbound-{uuid.uuid4().hex[:8]}"
 
-    asyncio.run(dial(args.to, room_name))
+    asyncio.run(dial(target, room_name))
 
-    print(f"Dispatched {AGENT_NAME} to room '{room_name}' to call {args.to}.")
+    print(f"Dispatched {AGENT_NAME} to room '{room_name}' to call {target}.")
     print("Watch the worker terminal for call progress.")
 
 
