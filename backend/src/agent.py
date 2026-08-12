@@ -23,7 +23,7 @@ from livekit.plugins.turn_detector.multilingual import MultilingualModel
 # Import SQLite database module and Day-5 real-data tools
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src import db
-from src.tools import fetch_weather, fetch_market_price
+from src.tools import fetch_weather, fetch_market_price, create_escalation_request
 
 logger = logging.getLogger("agent")
 
@@ -45,6 +45,7 @@ You have access to the following function tools:
 - `lookup_farmer_profile`, `save_farmer_profile`, `forget_farmer_profile` — farmer profile database
 - `get_weather_forecast` — fetches a REAL 3-day weather forecast for any Tamil Nadu district from Open-Meteo (IMD data). Use this whenever a farmer asks about rain, weather, spray timing, or harvest timing.
 - `get_crop_market_price` — fetches LIVE mandi prices from data.gov.in Agmarknet (official government source). Use this whenever a farmer asks about selling price, market rate, or mandi daam.
+- `create_escalation` — creates a human escalation request when a situation exceeds your capability. See ESCALATION TRIGGERS below.
 
 IMPORTANT: When you use `get_weather_forecast` or `get_crop_market_price`, always cite the source and date in your spoken reply. Never invent prices or weather — always call the tool first.
 
@@ -100,9 +101,27 @@ GUARDRAILS
 - NEVER CLAIMS:
   1. Never claim guaranteed crop yields or financial returns.
   2. Never claim official government authority or sanctioning power.
-- ESCALATION SCRIPT:
-  When refusing out-of-scope or high-risk requests (e.g. loan approvals, severe disease outbreaks, legal disputes), state:
-  "Indha specific request kaga naan ungalukku official Krishi Vigyan Kendra (KVK) expert kitta pesalaam nu solren. KVK national helpline 1800-180-1551 ku call pannunga."
+- ESCALATION TRIGGERS (Day 7):
+  You MUST call `create_escalation` when ANY of these two situations occur:
+
+  TRIGGER 1 — SERIOUS CROP EMERGENCY:
+  The farmer reports widespread, sudden, or uncontrolled crop damage:
+  examples — "half my field is dead", "all plants wilting overnight", "I see insects everywhere", "unknown black powder on all leaves", "locust attack", "80% crop loss".
+  These require a KVK expert immediately. Do NOT try to diagnose or prescribe chemicals.
+
+  TRIGGER 2 — MARKET DATA UNAVAILABLE + URGENT SELLING DECISION:
+  You called `get_crop_market_price` and it returned no data, AND the farmer says they need to sell today or urgently need the price for an immediate decision. Do NOT guess a price.
+
+- ESCALATION CONSENT RULE (ABSOLUTE):
+  BEFORE calling `create_escalation`, you MUST tell the farmer what information you want to share and ask for their permission.
+  Ask in Tamil script: "உங்கள் பெயர், மாவட்டம், மற்றும் பயிர் விவரங்களை ஒரு KVK expert-கு share பண்ணலாமா? (May I share your name, district, and crop details with a KVK expert?)"
+  Only call `create_escalation` with `permission_granted=True` if the farmer explicitly agrees.
+  If the farmer says no ("இல்லை", "No", "வேண்டாம்"), say: "சரி ஐயா, உங்கள் விவரங்களை share பண்ணவில்லை. KVK helpline 1800-180-1551 ku நீங்களே call பண்ணலாம்." and DO NOT escalate.
+
+- AFTER ESCALATION:
+  Read the reference ID to the caller (e.g. 'KM-20260812-0001').
+  Explain honestly when a KVK expert will contact them (based on urgency).
+  Advise them to call KVK helpline 1800-180-1551 immediately if they cannot wait.
 
 STYLE
 - Keep all spoken replies under 20 words per sentence.
@@ -222,6 +241,73 @@ class Assistant(Agent):
         """
         result = await fetch_market_price(crop=crop, state="Tamil Nadu")
         return result["summary"]
+
+    # ------------------------------------------------------------------
+    # DAY 7 — Human Escalation Tool
+    # ------------------------------------------------------------------
+
+    @function_tool
+    async def create_escalation(
+        self,
+        context: RunContext,
+        trigger_type: str,
+        situation_summary: str,
+        already_checked: str = "",
+        urgency: str = "medium",
+        contact_method: str = "phone",
+        permission_granted: bool = False,
+    ) -> str:
+        """Creates a human escalation request to a KVK agricultural expert.
+
+        ABSOLUTE RULE: You MUST ask the farmer for permission before calling this tool.
+        Ask: 'உங்கள் பெயர், மாவட்டம், மற்றும் பயிர் விவரங்களை ஒரு KVK expert-கு share பண்ணலாமா?'
+        ONLY set permission_granted=True if the farmer explicitly agrees.
+        If they decline, DO NOT call this tool.
+
+        Call this tool ONLY for these two triggers:
+          TRIGGER 1: Serious crop emergency — widespread wilting, mass plant death, locust attacks,
+                     uncontrolled pest/disease outbreak the agent cannot diagnose or treat.
+          TRIGGER 2: Market data unavailable — `get_crop_market_price` returned no data AND
+                     the farmer urgently needs a price for an immediate selling decision.
+
+        Args:
+            trigger_type: Must be 'crop_emergency' or 'market_data_missing'
+            situation_summary: Concise description of what the farmer reported (no passwords/OTPs/PINs)
+            already_checked: What you (the agent) already tried before escalating (e.g. tools used, data checked)
+            urgency: 'low' | 'medium' | 'high' | 'emergency'
+            contact_method: How the farmer prefers to be contacted — 'phone' | 'whatsapp' | 'none'
+            permission_granted: Set to True ONLY if the farmer explicitly gave consent to share their details
+        """
+        if not permission_granted:
+            return (
+                "ERROR: The farmer did not give permission to share their information. "
+                "Do NOT create an escalation. Advise them to call KVK helpline 1800-180-1551 directly."
+            )
+
+        # Resolve farmer details from profile (already consented at sign-up time)
+        farmer = db.get_farmer(self.current_user_id) or {}
+        farmer_name = farmer.get("name") or "Unknown"
+        language = farmer.get("language_preference") or "Tamil"
+
+        result = await create_escalation_request(
+            farmer_id=self.current_user_id,
+            farmer_name=farmer_name,
+            trigger_type=trigger_type,
+            situation_summary=situation_summary,
+            already_checked=already_checked,
+            urgency=urgency,
+            language=language,
+            contact_method=contact_method,
+        )
+
+        if not result.get("success"):
+            return result.get("message", "Escalation failed. Please call KVK helpline 1800-180-1551.")
+
+        ref = result["reference_id"]
+        return (
+            f"Escalation created successfully. Reference ID: {ref}. "
+            f"{result['message']}"
+        )
 
 
 server = AgentServer()

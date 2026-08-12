@@ -1,11 +1,14 @@
 """
-Day 5 — Real-Data Tool Fetchers for Kisan Mitra
-================================================
-fetch_weather()     : Open-Meteo free API — no key required
-fetch_market_price(): data.gov.in Agmarknet public JSON API
+Kisan Mitra — Tool Fetchers
+===========================
+Day 5  fetch_weather()            : Open-Meteo free API — no key required
+Day 5  fetch_market_price()       : data.gov.in Agmarknet public JSON API
+Day 7  create_escalation_request(): Human-help escalation with Discord webhook
 """
 
 import logging
+import os
+import re
 from datetime import date, timedelta
 from typing import Optional
 
@@ -346,4 +349,173 @@ async def fetch_market_price(crop: str, state: str = "Tamil Nadu", district: str
         "records": records,
         "summary": summary,
         "error": None,
+    }
+
+
+# ---------------------------------------------------------------------------
+# DAY 7 — HUMAN ESCALATION TOOL
+# ---------------------------------------------------------------------------
+
+# Regex patterns for common PII that must NOT leave the device
+_PII_PATTERNS = [
+    (re.compile(r"\b\d{6}\b"), "[OTP_REDACTED]"),               # 6-digit OTPs
+    (re.compile(r"\b\d{4}\b"), "[PIN_REDACTED]"),                # 4-digit PINs
+    (re.compile(r"\b\d{9,18}\b"), "[ACCOUNT_REDACTED]"),         # bank/account numbers
+    (re.compile(r"\b[A-Z]{5}[0-9]{4}[A-Z]\b"), "[PAN_REDACTED]"),  # PAN card
+    (re.compile(r"\b\d{12}\b"), "[AADHAAR_REDACTED]"),           # Aadhaar
+    (re.compile(
+        r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+    ), "[EMAIL_REDACTED]"),
+]
+
+
+def _scrub_pii(text: str) -> str:
+    """Remove common PII patterns from text before sending to external services."""
+    for pattern, replacement in _PII_PATTERNS:
+        text = pattern.sub(replacement, text)
+    return text.strip()
+
+
+async def _send_discord_webhook(payload: dict) -> None:
+    """
+    Optionally send an escalation notification to a Discord channel.
+    Only fires if DISCORD_WEBHOOK_URL is set in the environment.
+    Failures are logged but do not block the escalation from being saved.
+    """
+    webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
+    if not webhook_url:
+        logger.debug("No DISCORD_WEBHOOK_URL set — skipping webhook")
+        return
+
+    urgency_emoji = {
+        "low": "🟢",
+        "medium": "🟡",
+        "high": "🟠",
+        "emergency": "🔴",
+    }.get(payload.get("urgency", "medium"), "🟡")
+
+    trigger_label = {
+        "crop_emergency": "🌾 Serious Crop Emergency",
+        "market_data_missing": "📊 Market Data Unavailable",
+    }.get(payload.get("trigger_type"), payload.get("trigger_type", "Unknown"))
+
+    embed = {
+        "title": f"{urgency_emoji} Kisan Mitra Escalation — {payload['reference_id']}",
+        "color": {"low": 0x27AE60, "medium": 0xF39C12, "high": 0xE67E22, "emergency": 0xE74C3C}.get(
+            payload.get("urgency", "medium"), 0xF39C12
+        ),
+        "fields": [
+            {"name": "Trigger",       "value": trigger_label,                        "inline": True},
+            {"name": "Urgency",       "value": payload.get("urgency", "medium").upper(), "inline": True},
+            {"name": "Farmer",        "value": payload.get("farmer_name", "Unknown"), "inline": True},
+            {"name": "Language",      "value": payload.get("language", "Tamil"),      "inline": True},
+            {"name": "Contact",       "value": payload.get("contact_method", "phone"),"inline": True},
+            {"name": "Summary",       "value": payload.get("situation_summary", ""), "inline": False},
+            {"name": "Already Tried", "value": payload.get("already_checked") or "Not specified", "inline": False},
+        ],
+        "footer": {"text": "Kisan Mitra — Human Escalation System"},
+        "timestamp": payload.get("created_at", ""),
+    }
+    discord_payload = {"embeds": [embed]}
+
+    try:
+        async with httpx.AsyncClient(timeout=8.0) as client:
+            resp = await client.post(webhook_url, json=discord_payload)
+            resp.raise_for_status()
+        logger.info(f"Discord webhook sent for escalation {payload['reference_id']}")
+    except Exception as exc:
+        logger.warning(f"Discord webhook failed for {payload['reference_id']}: {exc}")
+
+
+async def create_escalation_request(
+    farmer_id: str,
+    farmer_name: str,
+    trigger_type: str,
+    situation_summary: str,
+    already_checked: str = "",
+    urgency: str = "medium",
+    language: str = "Tamil",
+    contact_method: str = "phone",
+) -> dict:
+    """
+    Day 7: Create a human-help escalation request.
+
+    Workflow:
+      1. Scrub PII from text fields
+      2. Write record to the SQLite escalations table
+      3. Optionally push a Discord webhook notification
+      4. Return {reference_id, status, next_steps} for the agent to relay to the farmer
+
+    Args:
+        farmer_id:          Caller / user ID (e.g. 'farmer_001')
+        farmer_name:        Farmer's name (consented and provided by caller)
+        trigger_type:       'crop_emergency' | 'market_data_missing'
+        situation_summary:  Short description of the problem (PII will be auto-scrubbed)
+        already_checked:    What the agent already attempted before escalating
+        urgency:            'low' | 'medium' | 'high' | 'emergency'
+        language:           Caller's language (e.g. 'Tamil', 'Tamil+English')
+        contact_method:     'phone' | 'whatsapp' | 'none'
+
+    Returns:
+        dict with: reference_id, status, message (next steps for agent to speak)
+    """
+    # Import here to avoid circular import at module load time
+    from src import db
+
+    # Scrub PII from free-text fields before saving or sending anywhere
+    clean_summary = _scrub_pii(situation_summary)
+    clean_checked = _scrub_pii(already_checked)
+    clean_name    = farmer_name.strip() or "Unknown"
+
+    # Persist to DB
+    try:
+        record = db.create_escalation_record(
+            farmer_id=farmer_id,
+            farmer_name=clean_name,
+            trigger_type=trigger_type,
+            situation_summary=clean_summary,
+            already_checked=clean_checked,
+            urgency=urgency,
+            language=language,
+            contact_method=contact_method,
+        )
+    except Exception as exc:
+        logger.error(f"Failed to create escalation record: {exc}")
+        return {
+            "success": False,
+            "reference_id": None,
+            "message": "Escalation could not be saved due to a system error. Please call KVK helpline 1800-180-1551 directly.",
+        }
+
+    reference_id = record["reference_id"]
+
+    # Send Discord notification (fire-and-forget; errors don't block response)
+    webhook_payload = {
+        **record,
+        "situation_summary": clean_summary,
+        "already_checked": clean_checked,
+    }
+    await _send_discord_webhook(webhook_payload)
+
+    # Compose next-steps message for agent to read aloud
+    response_time = {
+        "emergency": "2 மணி நேரத்தில் (within 2 hours)",
+        "high":      "4 மணி நேரத்தில் (within 4 hours)",
+        "medium":    "24 மணி நேரத்தில் (within 24 hours)",
+        "low":       "48 மணி நேரத்தில் (within 48 hours)",
+    }.get(urgency, "24 மணி நேரத்தில் (within 24 hours)")
+
+    next_steps = (
+        f"Escalation request {reference_id} has been created. "
+        f"A KVK agricultural expert will contact you {response_time}. "
+        f"For immediate help, call the KVK national helpline: 1800-180-1551 (toll-free)."
+    )
+
+    logger.info(f"Escalation {reference_id} created successfully — trigger={trigger_type}, urgency={urgency}")
+
+    return {
+        "success": True,
+        "reference_id": reference_id,
+        "status": record.get("status", "open"),
+        "message": next_steps,
     }
