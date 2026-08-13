@@ -53,6 +53,25 @@ def init_db():
         )
     """)
 
+    # --- Call Logs table (Day 8) ---
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS call_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT UNIQUE NOT NULL,
+            caller_id TEXT,
+            channel TEXT DEFAULT 'browser',
+            language TEXT DEFAULT 'Tamil',
+            started_at TIMESTAMP NOT NULL,
+            ended_at TIMESTAMP,
+            duration_seconds INTEGER,
+            outcome TEXT DEFAULT 'incomplete',
+            failure_type TEXT DEFAULT 'none',
+            topics_discussed TEXT DEFAULT '',
+            tools_called TEXT DEFAULT '',
+            escalated INTEGER DEFAULT 0
+        )
+    """)
+
     conn.commit()
     conn.close()
     logger.info(f"Database initialized at {DB_PATH}")
@@ -264,3 +283,196 @@ def update_escalation_status(reference_id: str, new_status: str) -> Optional[Dic
         return get_escalation(reference_id)
     logger.warning(f"Escalation {reference_id} not found for status update")
     return None
+
+
+# ---------------------------------------------------------------------------
+# Call Logs CRUD (Day 8)
+# ---------------------------------------------------------------------------
+
+def create_call_log(
+    session_id: str,
+    caller_id: str = "unknown",
+    channel: str = "browser",
+    language: str = "Tamil",
+) -> Dict[str, Any]:
+    """
+    Creates a new call log entry when a session starts.
+    Returns the created record (with id for later updates).
+    No PII stored — no names, no transcripts, no phone numbers.
+    """
+    init_db()
+    now = datetime.now().isoformat()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT OR IGNORE INTO call_logs
+            (session_id, caller_id, channel, language, started_at,
+             outcome, failure_type, topics_discussed, tools_called, escalated)
+        VALUES (?, ?, ?, ?, ?, 'incomplete', 'none', '', '', 0)
+    """, (session_id, caller_id, channel, language, now))
+    conn.commit()
+    cursor.execute("SELECT * FROM call_logs WHERE session_id = ?", (session_id,))
+    row = cursor.fetchone()
+    conn.close()
+    logger.info(f"Call log created: session={session_id}")
+    return dict(row) if row else {}
+
+
+def update_call_log(
+    session_id: str,
+    outcome: str,
+    failure_type: str = "none",
+    topics_discussed: str = "",
+    tools_called: str = "",
+    escalated: bool = False,
+    language: str = "",
+) -> Optional[Dict[str, Any]]:
+    """
+    Finalises a call log entry when the session ends.
+    Calculates duration from started_at to now.
+
+    Args:
+        session_id:       Unique room/session identifier
+        outcome:          'success' | 'failed' | 'incomplete'
+        failure_type:     'none' | 'early_hangup' | 'no_tool_called' | 'tool_error' | 'user_declined'
+        topics_discussed: Comma-separated topics (weather, price, advice, scheme, escalation)
+        tools_called:     Comma-separated tool names used during the call
+        escalated:        Whether a human escalation was created
+        language:         Detected language of the session
+    """
+    valid_outcomes = {"success", "failed", "incomplete"}
+    if outcome not in valid_outcomes:
+        raise ValueError(f"Invalid outcome '{outcome}'. Must be one of {valid_outcomes}")
+
+    init_db()
+    now = datetime.now().isoformat()
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Fetch start time to compute duration
+    cursor.execute("SELECT started_at FROM call_logs WHERE session_id = ?", (session_id,))
+    row = cursor.fetchone()
+    duration_seconds = None
+    if row and row["started_at"]:
+        try:
+            started = datetime.fromisoformat(row["started_at"])
+            duration_seconds = int((datetime.now() - started).total_seconds())
+        except Exception:
+            pass
+
+    updates = {
+        "ended_at": now,
+        "duration_seconds": duration_seconds,
+        "outcome": outcome,
+        "failure_type": failure_type,
+        "topics_discussed": topics_discussed,
+        "tools_called": tools_called,
+        "escalated": 1 if escalated else 0,
+    }
+    if language:
+        updates["language"] = language
+
+    set_clause = ", ".join(f"{k} = ?" for k in updates)
+    values = list(updates.values()) + [session_id]
+    cursor.execute(f"UPDATE call_logs SET {set_clause} WHERE session_id = ?", values)
+    conn.commit()
+    cursor.execute("SELECT * FROM call_logs WHERE session_id = ?", (session_id,))
+    updated = cursor.fetchone()
+    conn.close()
+    logger.info(f"Call log updated: session={session_id} outcome={outcome} duration={duration_seconds}s")
+    return dict(updated) if updated else None
+
+
+def get_call_stats() -> Dict[str, Any]:
+    """
+    Returns aggregate call statistics for the dashboard.
+    Output: {total, success, failed, incomplete, success_rate, avg_duration_seconds,
+             escalated_count, today_total, today_success}
+    """
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM call_logs")
+    total = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM call_logs WHERE outcome = 'success'")
+    success = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM call_logs WHERE outcome = 'failed'")
+    failed = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM call_logs WHERE outcome = 'incomplete'")
+    incomplete = cursor.fetchone()[0]
+
+    cursor.execute("SELECT AVG(duration_seconds) FROM call_logs WHERE duration_seconds IS NOT NULL")
+    avg_dur = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM call_logs WHERE escalated = 1")
+    escalated_count = cursor.fetchone()[0]
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    cursor.execute("SELECT COUNT(*) FROM call_logs WHERE started_at LIKE ?", (today + "%",))
+    today_total = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM call_logs WHERE outcome='success' AND started_at LIKE ?",
+        (today + "%",)
+    )
+    today_success = cursor.fetchone()[0]
+
+    conn.close()
+
+    success_rate = round((success / total * 100), 1) if total > 0 else 0.0
+    return {
+        "total": total,
+        "success": success,
+        "failed": failed,
+        "incomplete": incomplete,
+        "success_rate": success_rate,
+        "avg_duration_seconds": round(avg_dur, 1) if avg_dur else 0,
+        "escalated_count": escalated_count,
+        "today_total": today_total,
+        "today_success": today_success,
+    }
+
+
+def list_call_logs(limit: int = 50) -> List[Dict[str, Any]]:
+    """
+    Returns recent call logs (newest first), capped at `limit`.
+    PII-safe: session_id is truncated, no names or transcripts.
+    """
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM call_logs ORDER BY started_at DESC LIMIT ?",
+        (limit,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_daily_stats(days: int = 7) -> List[Dict[str, Any]]:
+    """
+    Returns per-day call breakdown for the last `days` days.
+    Each entry: {date, total, success, failed}
+    """
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            DATE(started_at) AS date,
+            COUNT(*) AS total,
+            SUM(CASE WHEN outcome='success' THEN 1 ELSE 0 END) AS success,
+            SUM(CASE WHEN outcome='failed'  THEN 1 ELSE 0 END) AS failed
+        FROM call_logs
+        WHERE started_at >= DATE('now', ?)
+        GROUP BY DATE(started_at)
+        ORDER BY date ASC
+    """, (f"-{days} days",))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]

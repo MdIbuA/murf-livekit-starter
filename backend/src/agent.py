@@ -1,6 +1,9 @@
 import logging
 import os
 import sys
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import List
 
 from dotenv import load_dotenv
 from livekit import rtc
@@ -46,6 +49,12 @@ You have access to the following function tools:
 - `get_weather_forecast` — fetches a REAL 3-day weather forecast for any Tamil Nadu district from Open-Meteo (IMD data). Use this whenever a farmer asks about rain, weather, spray timing, or harvest timing.
 - `get_crop_market_price` — fetches LIVE mandi prices from data.gov.in Agmarknet (official government source). Use this whenever a farmer asks about selling price, market rate, or mandi daam.
 - `create_escalation` — creates a human escalation request when a situation exceeds your capability. See ESCALATION TRIGGERS below.
+- `hand_off_to_crop_doctor` — HANDOFF TOOL (Day 9): Hands off the caller to our Specialist Agent (Crop Doctor) for crop disease diagnosis, yellowing leaves, pest attacks, or spray recipes.
+
+SPECIALIST AGENT HANDOFF (DAY 9 MANDATE):
+- When a farmer asks about crop diseases, yellowing leaves, black spots, pest infestations (stem borer, whiteflies, aphids), or specific spray treatments, YOU MUST HAND OFF to the Crop Specialist using `hand_off_to_crop_doctor`.
+- BEFORE calling `hand_off_to_crop_doctor`, tell the farmer in Tamil script:
+  "நான் உங்களை எங்கள் பயிர் நோய் மற்றும் பூச்சி வல்லுநரிடம் (Crop Specialist) இணைக்கிறேன்." ("I am connecting you to our crop disease & pest specialist.")
 
 IMPORTANT: When you use `get_weather_forecast` or `get_crop_market_price`, always cite the source and date in your spoken reply. Never invent prices or weather — always call the tool first.
 
@@ -132,8 +141,14 @@ STYLE
 
 
 class Assistant(Agent):
-    def __init__(self, current_user_id: str = "farmer_001") -> None:
+    def __init__(self, current_user_id: str = "farmer_001", session_id: str = "") -> None:
         self.current_user_id = current_user_id
+        self.session_id = session_id
+        # --- Day 8: per-session call tracker (no PII stored) ---
+        self._tools_called: List[str] = []
+        self._topics_covered: List[str] = []
+        self._escalated: bool = False
+        self._start_time: datetime = datetime.now()
         super().__init__(instructions=SYSTEM_PROMPT)
 
     @function_tool
@@ -221,6 +236,10 @@ class Assistant(Agent):
             district: Tamil Nadu district name (e.g. Thanjavur, Madurai, Coimbatore, Chennai)
             days: Number of forecast days (1-7, default 3)
         """
+        # Day 8: track tool usage
+        self._tools_called.append("get_weather_forecast")
+        self._topics_covered.append("weather")
+
         result = await fetch_weather(district=district, days=days)
         return result["summary"]
 
@@ -239,6 +258,10 @@ class Assistant(Agent):
             crop: Crop name in English or Tamil (e.g. paddy, nel, cotton, sugarcane, groundnut, banana, onion)
             district: District or state for price lookup (default: Tamil Nadu)
         """
+        # Day 8: track tool usage
+        self._tools_called.append("get_crop_market_price")
+        self._topics_covered.append("price")
+
         result = await fetch_market_price(crop=crop, state="Tamil Nadu")
         return result["summary"]
 
@@ -303,11 +326,166 @@ class Assistant(Agent):
         if not result.get("success"):
             return result.get("message", "Escalation failed. Please call KVK helpline 1800-180-1551.")
 
+        # Day 8: track escalation
+        self._escalated = True
+        self._topics_covered.append("escalation")
+        self._tools_called.append("create_escalation")
+
         ref = result["reference_id"]
         return (
             f"Escalation created successfully. Reference ID: {ref}. "
             f"{result['message']}"
         )
+
+    # ------------------------------------------------------------------
+    # DAY 9 — Specialist Agent Handoff Tool
+    # ------------------------------------------------------------------
+
+    @function_tool
+    async def hand_off_to_crop_doctor(self, context: RunContext, disease_or_pest_query: str = "") -> str:
+        """Hands off the caller to the Specialist Agent: Crop Doctor (Pest & Crop Disease Specialist).
+
+        ALWAYS call this tool when the farmer asks about:
+        - Crop disease diagnosis (yellow leaves, black spots, wilting, leaf curl, root rot, fungal infections)
+        - Pest infestations (locusts, stem borer, bollworm, aphids, whiteflies, mealybugs)
+        - Specific pesticide, fungicide, or organic spray recommendations (Neem oil, Panchagavya, chemical dosage)
+        - Plant health diagnosis requiring specialist attention.
+
+        BEFORE calling this tool, say to the farmer in Tamil script:
+        "நான் உங்களை எங்கள் பயிர் நோய் மற்றும் பூச்சி வல்லுநரிடம் (Crop Specialist) இணைக்கிறேன்."
+
+        Args:
+            disease_or_pest_query: Summary of the crop disease or pest issue reported by the farmer.
+        """
+        self._tools_called.append("hand_off_to_crop_doctor")
+        self._topics_covered.append("pest_disease_specialist_handoff")
+
+        specialist = CropDoctorAgent(
+            current_user_id=self.current_user_id,
+            session_id=self.session_id,
+            disease_query=disease_or_pest_query
+        )
+        context.session.update_agent(specialist)
+        return (
+            f"HANDOFF_SUCCESS: Transferred caller to CropDoctorAgent (Pest & Disease Specialist). "
+            f"Query context: '{disease_or_pest_query}'."
+        )
+
+
+# ----------------------------------------------------------------------
+# DAY 9 — Specialist Agent Class (Pest & Crop Disease Specialist)
+# ----------------------------------------------------------------------
+
+CROP_DOCTOR_PROMPT = """IDENTITY
+You are Crop Doctor (பயிர் மருத்துவ வல்லுநர்), a specialized AI crop disease, pest control, and plant health expert for Tamil Nadu farmers, powered by Murf Falcon voice technology.
+
+OBJECTIVES & ROLE
+1. Diagnose crop diseases (yellowing leaves, black spots, fungal wilting, leaf curl, root rot) and pest infestations (stem borer, whiteflies, locusts, aphids, bollworm) for Tamil Nadu crops (Paddy/Nel, Sugarcane, Cotton, Groundnut, Banana, Vegetables).
+2. Provide practical, step-by-step organic spray recipes (Neem oil, Panchagavya, Agni Astra) or approved chemical treatment guidelines (Zinc sulfate, Carbendazim, Copper oxychloride).
+3. Upon taking over the conversation, introduce yourself warmly in Tamil script:
+   "வணக்கம்! நான் Kisan Mitra பயிர் மருத்துவ வல்லுநர் (Crop Specialist). உங்கள் பயிர் பிரச்சனையை சொல்லுங்கள், நான் தீர்வு சொல்கிறேன்."
+4. Always write Tamil words in pure Tamil Unicode script (e.g. வணக்கம், மஞ்சள் நோய், உரம்). Never use Tanglish.
+
+HANDOFF & HANDBACK RULES:
+1. If the farmer asks about general weather, rain forecast, daily mandi market prices, government welfare schemes (PM-KISAN), or deleting their profile, use `hand_back_to_main_agent` to return control to the main Kisan Mitra agent.
+2. BEFORE calling `hand_back_to_main_agent`, say: "நான் உங்களை மீண்டும் பிரதான Kisan Mitra உதவியாளரிடம் இணைக்கிறேன்."
+3. If crop damage is catastrophic/severe (e.g. 80% loss, complete field death), ask for consent and use `create_escalation` to connect to a human KVK expert.
+
+STYLE
+- Keep spoken replies under 20 words per sentence.
+- Speak naturally and conversationally.
+- NEVER use markdown, bullet points, asterisks, brackets, or emojis.
+- Be authoritative, empathetic, precise, and encouraging.
+"""
+
+
+class CropDoctorAgent(Agent):
+    """Day 9 Specialist Agent: Crop Disease & Pest Specialist."""
+
+    def __init__(self, current_user_id: str = "farmer_001", session_id: str = "", disease_query: str = "") -> None:
+        self.current_user_id = current_user_id
+        self.session_id = session_id
+        self.disease_query = disease_query
+        self._tools_called: List[str] = []
+        self._topics_covered: List[str] = ["crop_doctor_specialist"]
+        self._escalated: bool = False
+        self._start_time: datetime = datetime.now()
+
+        instructions = CROP_DOCTOR_PROMPT
+        if disease_query:
+            instructions += f"\n\nINITIAL FARMER QUERY TRANSFERRED FROM MAIN AGENT: '{disease_query}'"
+
+        # Inject saved profile data so specialist knows caller context without re-asking
+        farmer = db.get_farmer(current_user_id) or {}
+        if farmer:
+            instructions += (
+                f"\n\nFARMER PROFILE CONTEXT: Name={farmer.get('name')}, "
+                f"District={farmer.get('district')}, Crops={farmer.get('crops_grown')}, "
+                f"Land={farmer.get('land_size')}"
+            )
+
+        super().__init__(instructions=instructions)
+
+    @function_tool
+    async def get_weather_forecast(self, context: RunContext, district: str, days: int = 3) -> str:
+        """Fetches a weather forecast to check if it is safe to spray pesticides or fungicides."""
+        self._tools_called.append("get_weather_forecast")
+        result = await fetch_weather(district=district, days=days)
+        return result["summary"]
+
+    @function_tool
+    async def create_escalation(
+        self,
+        context: RunContext,
+        trigger_type: str,
+        situation_summary: str,
+        already_checked: str = "",
+        urgency: str = "high",
+        contact_method: str = "phone",
+        permission_granted: bool = False,
+    ) -> str:
+        """Creates a human escalation request to a KVK agricultural expert for catastrophic crop emergencies."""
+        if not permission_granted:
+            return "ERROR: Permission denied by farmer. Advise calling KVK 1800-180-1551 directly."
+
+        farmer = db.get_farmer(self.current_user_id) or {}
+        result = await create_escalation_request(
+            farmer_id=self.current_user_id,
+            farmer_name=farmer.get("name") or "Unknown",
+            trigger_type=trigger_type,
+            situation_summary=situation_summary,
+            already_checked=already_checked,
+            urgency=urgency,
+            language=farmer.get("language_preference") or "Tamil",
+            contact_method=contact_method,
+        )
+        if not result.get("success"):
+            return result.get("message", "Escalation failed.")
+
+        self._escalated = True
+        self._tools_called.append("create_escalation")
+        return f"Escalation created successfully. Reference ID: {result['reference_id']}. {result['message']}"
+
+    @function_tool
+    async def hand_back_to_main_agent(self, context: RunContext, reason: str = "") -> str:
+        """Hands the caller back to the main Kisan Mitra agent when crop disease/pest query is complete
+        or when the farmer asks about non-disease topics (weather, market price, profile memory, schemes).
+
+        BEFORE calling this tool, say:
+        "நான் உங்களை மீண்டும் பிரதான Kisan Mitra உதவியாளரிடம் இணைக்கிறேன்."
+
+        Args:
+            reason: Reason for handing back (e.g. 'Farmer asked for weather forecast', 'Disease advice complete')
+        """
+        self._tools_called.append("hand_back_to_main_agent")
+        self._topics_covered.append("handback_to_main_agent")
+
+        main_agent = Assistant(
+            current_user_id=self.current_user_id,
+            session_id=self.session_id
+        )
+        context.session.update_agent(main_agent)
+        return "HANDOFF_SUCCESS: Switched back to main Kisan Mitra agent."
 
 
 server = AgentServer()
@@ -330,6 +508,22 @@ async def my_agent(ctx: JobContext):
     caller_id = "farmer_001"
     existing_profile = db.get_farmer(caller_id)
 
+    # Day 8: Determine channel (SIP vs browser)
+    session_id = ctx.room.name or f"session_{int(datetime.now().timestamp())}"
+    channel = "sip" if any(
+        p.kind == rtc.ParticipantKind.PARTICIPANT_KIND_SIP
+        for p in ctx.room.remote_participants.values()
+    ) else "browser"
+
+    # Day 8: Create call log at session start
+    db.create_call_log(
+        session_id=session_id,
+        caller_id=caller_id,
+        channel=channel,
+        language="Tamil",
+    )
+    logger.info(f"Call log created for session={session_id} channel={channel}")
+
     # Set up LiveKit AgentSession with Tamil/Tanglish + Murf Venkat voice
     session = AgentSession(
         stt=deepgram.STT(model="nova-3", language="multi"),
@@ -347,7 +541,44 @@ async def my_agent(ctx: JobContext):
         preemptive_generation=True,
     )
 
-    assistant = Assistant(current_user_id=caller_id)
+    assistant = Assistant(current_user_id=caller_id, session_id=session_id)
+
+    # Day 8: Hook into session/room close to record call outcome
+    @ctx.room.on("disconnected")
+    def _on_room_disconnected(*args):
+        """Finalise the call log when the room closes."""
+        duration = int((datetime.now() - assistant._start_time).total_seconds())
+        tools = list(dict.fromkeys(assistant._tools_called))   # deduplicated, ordered
+        topics = list(dict.fromkeys(assistant._topics_covered))
+
+        # Determine outcome
+        if duration < 10:
+            outcome = "failed"
+            failure_type = "early_hangup"
+        elif tools:
+            # At least one tool was called successfully
+            outcome = "success"
+            failure_type = "none"
+        elif duration >= 30:
+            # Long call but no tools — gave conversational advice
+            outcome = "success"
+            failure_type = "none"
+        else:
+            outcome = "failed"
+            failure_type = "no_tool_called"
+
+        try:
+            db.update_call_log(
+                session_id=session_id,
+                outcome=outcome,
+                failure_type=failure_type,
+                topics_discussed=",".join(topics),
+                tools_called=",".join(tools),
+                escalated=assistant._escalated,
+            )
+            logger.info(f"Call log finalised: session={session_id} outcome={outcome} duration={duration}s")
+        except Exception as e:
+            logger.error(f"Failed to finalise call log for {session_id}: {e}")
 
     await session.start(
         agent=assistant,
