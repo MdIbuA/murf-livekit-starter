@@ -1,0 +1,736 @@
+[Skip to content](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend#start-of-content)
+
+## Navigation Menu
+
+[Sign in](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2FMdIbuA%2Fmurf-livekit-starter%2Ftree%2Fmain%2Ffrontend)
+- PlatformAI CODE CREATION[GitHub CopilotWrite better code with AI](https://github.com/features/copilot)[GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)[MCP RegistryIntegrate external tools](https://github.com/mcp)DEVELOPER WORKFLOWS[ActionsAutomate any workflow](https://github.com/features/actions)[CodespacesInstant dev environments](https://github.com/features/codespaces)[IssuesPlan and track work](https://github.com/features/issues)[Code ReviewManage code changes](https://github.com/features/code-review)[Code QualityEnforce quality at merge](https://github.com/features/code-quality)APPLICATION SECURITY[GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)[Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)[Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)EXPLORE[Why GitHub](https://github.com/why-github)[Documentation](https://docs.github.com)[Blog](https://github.blog)[Changelog](https://github.blog/changelog)[Marketplace](https://github.com/marketplace)[View all features](https://github.com/features)
+- AI CODE CREATION[GitHub CopilotWrite better code with AI](https://github.com/features/copilot)[GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)[MCP RegistryIntegrate external tools](https://github.com/mcp)
+- [GitHub CopilotWrite better code with AI](https://github.com/features/copilot)
+- [GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)
+- [MCP RegistryIntegrate external tools](https://github.com/mcp)
+- DEVELOPER WORKFLOWS[ActionsAutomate any workflow](https://github.com/features/actions)[CodespacesInstant dev environments](https://github.com/features/codespaces)[IssuesPlan and track work](https://github.com/features/issues)[Code ReviewManage code changes](https://github.com/features/code-review)[Code QualityEnforce quality at merge](https://github.com/features/code-quality)
+- [ActionsAutomate any workflow](https://github.com/features/actions)
+- [CodespacesInstant dev environments](https://github.com/features/codespaces)
+- [IssuesPlan and track work](https://github.com/features/issues)
+- [Code ReviewManage code changes](https://github.com/features/code-review)
+- [Code QualityEnforce quality at merge](https://github.com/features/code-quality)
+- APPLICATION SECURITY[GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)[Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)[Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)
+- [GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)
+- [Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)
+- [Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)
+- EXPLORE[Why GitHub](https://github.com/why-github)[Documentation](https://docs.github.com)[Blog](https://github.blog)[Changelog](https://github.blog/changelog)[Marketplace](https://github.com/marketplace)
+- [Why GitHub](https://github.com/why-github)
+- [Documentation](https://docs.github.com)
+- [Blog](https://github.blog)
+- [Changelog](https://github.blog/changelog)
+- [Marketplace](https://github.com/marketplace)
+
+## Navigation Menu
+
+- SolutionsBY COMPANY SIZE[Enterprises](https://github.com/enterprise)[Small and medium teams](https://github.com/team)[Startups](https://github.com/enterprise/startups)[Nonprofits](https://github.com/solutions/industry/nonprofits)BY USE CASE[App Modernization](https://github.com/solutions/use-case/app-modernization)[DevSecOps](https://github.com/solutions/use-case/devsecops)[DevOps](https://github.com/solutions/use-case/devops)[CI/CD](https://github.com/solutions/use-case/ci-cd)[View all use cases](https://github.com/solutions/use-case)BY INDUSTRY[Healthcare](https://github.com/solutions/industry/healthcare)[Financial services](https://github.com/solutions/industry/financial-services)[Manufacturing](https://github.com/solutions/industry/manufacturing)[Government](https://github.com/solutions/industry/government)[View all industries](https://github.com/solutions/industry)[View all solutions](https://github.com/solutions)
+- BY COMPANY SIZE[Enterprises](https://github.com/enterprise)[Small and medium teams](https://github.com/team)[Startups](https://github.com/enterprise/startups)[Nonprofits](https://github.com/solutions/industry/nonprofits)
+- [Enterprises](https://github.com/enterprise)
+- [Small and medium teams](https://github.com/team)
+- [Startups](https://github.com/enterprise/startups)
+- [Nonprofits](https://github.com/solutions/industry/nonprofits)
+- BY USE CASE[App Modernization](https://github.com/solutions/use-case/app-modernization)[DevSecOps](https://github.com/solutions/use-case/devsecops)[DevOps](https://github.com/solutions/use-case/devops)[CI/CD](https://github.com/solutions/use-case/ci-cd)[View all use cases](https://github.com/solutions/use-case)
+- [App Modernization](https://github.com/solutions/use-case/app-modernization)
+- [DevSecOps](https://github.com/solutions/use-case/devsecops)
+- [DevOps](https://github.com/solutions/use-case/devops)
+- [CI/CD](https://github.com/solutions/use-case/ci-cd)
+- [View all use cases](https://github.com/solutions/use-case)
+- BY INDUSTRY[Healthcare](https://github.com/solutions/industry/healthcare)[Financial services](https://github.com/solutions/industry/financial-services)[Manufacturing](https://github.com/solutions/industry/manufacturing)[Government](https://github.com/solutions/industry/government)[View all industries](https://github.com/solutions/industry)
+- [Healthcare](https://github.com/solutions/industry/healthcare)
+- [Financial services](https://github.com/solutions/industry/financial-services)
+- [Manufacturing](https://github.com/solutions/industry/manufacturing)
+- [Government](https://github.com/solutions/industry/government)
+- [View all industries](https://github.com/solutions/industry)
+- ResourcesEXPLORE BY TOPIC[AI](https://github.com/resources/articles?topic=ai)[Software Development](https://github.com/resources/articles?topic=software-development)[DevOps](https://github.com/resources/articles?topic=devops)[Security](https://github.com/resources/articles?topic=security)[View all topics](https://github.com/resources/articles)EXPLORE BY TYPE[Customer stories](https://github.com/customer-stories)[Events & webinars](https://github.com/resources/events)[Ebooks & reports](https://github.com/resources/whitepapers)[Business insights](https://github.com/solutions/executive-insights)[GitHub Skills](https://skills.github.com)SUPPORT & SERVICES[Documentation](https://docs.github.com)[Customer support](https://support.github.com)[Community forum](https://github.com/orgs/community/discussions)[Trust center](https://github.com/trust-center)[Partners](https://github.com/partners)[View all resources](https://github.com/resources)
+- EXPLORE BY TOPIC[AI](https://github.com/resources/articles?topic=ai)[Software Development](https://github.com/resources/articles?topic=software-development)[DevOps](https://github.com/resources/articles?topic=devops)[Security](https://github.com/resources/articles?topic=security)[View all topics](https://github.com/resources/articles)
+- [AI](https://github.com/resources/articles?topic=ai)
+- [Software Development](https://github.com/resources/articles?topic=software-development)
+- [DevOps](https://github.com/resources/articles?topic=devops)
+- [Security](https://github.com/resources/articles?topic=security)
+- [View all topics](https://github.com/resources/articles)
+
+## Navigation Menu
+
+- EXPLORE BY TYPE[Customer stories](https://github.com/customer-stories)[Events & webinars](https://github.com/resources/events)[Ebooks & reports](https://github.com/resources/whitepapers)[Business insights](https://github.com/solutions/executive-insights)[GitHub Skills](https://skills.github.com)
+- [Customer stories](https://github.com/customer-stories)
+- [Events & webinars](https://github.com/resources/events)
+- [Ebooks & reports](https://github.com/resources/whitepapers)
+- [Business insights](https://github.com/solutions/executive-insights)
+- [GitHub Skills](https://skills.github.com)
+- SUPPORT & SERVICES[Documentation](https://docs.github.com)[Customer support](https://support.github.com)[Community forum](https://github.com/orgs/community/discussions)[Trust center](https://github.com/trust-center)[Partners](https://github.com/partners)
+- [Documentation](https://docs.github.com)
+- [Customer support](https://support.github.com)
+- [Community forum](https://github.com/orgs/community/discussions)
+- [Trust center](https://github.com/trust-center)
+- [Partners](https://github.com/partners)
+- Open SourceCOMMUNITY[GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)PROGRAMS[Security Lab](https://securitylab.github.com)[Maintainer Community](https://maintainers.github.com)[Accelerator](https://github.com/open-source/accelerator)[GitHub Stars](https://stars.github.com)[Archive Program](https://archiveprogram.github.com)REPOSITORIES[Topics](https://github.com/topics)[Trending](https://github.com/trending)[Collections](https://github.com/collections)
+- COMMUNITY[GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)
+- [GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)
+- PROGRAMS[Security Lab](https://securitylab.github.com)[Maintainer Community](https://maintainers.github.com)[Accelerator](https://github.com/open-source/accelerator)[GitHub Stars](https://stars.github.com)[Archive Program](https://archiveprogram.github.com)
+- [Security Lab](https://securitylab.github.com)
+- [Maintainer Community](https://maintainers.github.com)
+- [Accelerator](https://github.com/open-source/accelerator)
+- [GitHub Stars](https://stars.github.com)
+- [Archive Program](https://archiveprogram.github.com)
+- REPOSITORIES[Topics](https://github.com/topics)[Trending](https://github.com/trending)[Collections](https://github.com/collections)
+- [Topics](https://github.com/topics)
+- [Trending](https://github.com/trending)
+- [Collections](https://github.com/collections)
+- EnterpriseENTERPRISE SOLUTIONS[Enterprise platformAI-powered developer platform](https://github.com/enterprise)AVAILABLE ADD-ONS[GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)[Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)[Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+- ENTERPRISE SOLUTIONS[Enterprise platformAI-powered developer platform](https://github.com/enterprise)
+- [Enterprise platformAI-powered developer platform](https://github.com/enterprise)
+- AVAILABLE ADD-ONS[GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)[Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)[Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+- [GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)
+- [Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)
+- [Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+- [Pricing](https://github.com/pricing)
+- AI CODE CREATION[GitHub CopilotWrite better code with AI](https://github.com/features/copilot)[GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)[MCP RegistryIntegrate external tools](https://github.com/mcp)
+- [GitHub CopilotWrite better code with AI](https://github.com/features/copilot)
+- [GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)
+- [MCP RegistryIntegrate external tools](https://github.com/mcp)
+
+## Navigation Menu
+
+- DEVELOPER WORKFLOWS[ActionsAutomate any workflow](https://github.com/features/actions)[CodespacesInstant dev environments](https://github.com/features/codespaces)[IssuesPlan and track work](https://github.com/features/issues)[Code ReviewManage code changes](https://github.com/features/code-review)[Code QualityEnforce quality at merge](https://github.com/features/code-quality)
+- [ActionsAutomate any workflow](https://github.com/features/actions)
+- [CodespacesInstant dev environments](https://github.com/features/codespaces)
+- [IssuesPlan and track work](https://github.com/features/issues)
+- [Code ReviewManage code changes](https://github.com/features/code-review)
+- [Code QualityEnforce quality at merge](https://github.com/features/code-quality)
+- APPLICATION SECURITY[GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)[Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)[Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)
+- [GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)
+- [Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)
+- [Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)
+- EXPLORE[Why GitHub](https://github.com/why-github)[Documentation](https://docs.github.com)[Blog](https://github.blog)[Changelog](https://github.blog/changelog)[Marketplace](https://github.com/marketplace)
+- [Why GitHub](https://github.com/why-github)
+- [Documentation](https://docs.github.com)
+- [Blog](https://github.blog)
+- [Changelog](https://github.blog/changelog)
+- [Marketplace](https://github.com/marketplace)
+- [GitHub CopilotWrite better code with AI](https://github.com/features/copilot)
+- [GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)
+- [MCP RegistryIntegrate external tools](https://github.com/mcp)
+[GitHub CopilotWrite better code with AI](https://github.com/features/copilot)
+[GitHub Copilot appDirect agents from issue to merge](https://github.com/features/ai/github-app)
+[MCP RegistryIntegrate external tools](https://github.com/mcp)
+- [ActionsAutomate any workflow](https://github.com/features/actions)
+- [CodespacesInstant dev environments](https://github.com/features/codespaces)
+- [IssuesPlan and track work](https://github.com/features/issues)
+- [Code ReviewManage code changes](https://github.com/features/code-review)
+- [Code QualityEnforce quality at merge](https://github.com/features/code-quality)
+[ActionsAutomate any workflow](https://github.com/features/actions)
+[CodespacesInstant dev environments](https://github.com/features/codespaces)
+[IssuesPlan and track work](https://github.com/features/issues)
+[Code ReviewManage code changes](https://github.com/features/code-review)
+[Code QualityEnforce quality at merge](https://github.com/features/code-quality)
+- [GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)
+- [Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)
+- [Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)
+[GitHub Advanced SecurityFind and fix vulnerabilities](https://github.com/security/advanced-security)
+[Code securitySecure your code as you build](https://github.com/security/advanced-security/code-security)
+[Secret protectionStop leaks before they start](https://github.com/security/advanced-security/secret-protection)
+- [Why GitHub](https://github.com/why-github)
+- [Documentation](https://docs.github.com)
+- [Blog](https://github.blog)
+- [Changelog](https://github.blog/changelog)
+- [Marketplace](https://github.com/marketplace)
+[Why GitHub](https://github.com/why-github)
+[Documentation](https://docs.github.com)
+[Blog](https://github.blog)
+[Changelog](https://github.blog/changelog)
+[Marketplace](https://github.com/marketplace)
+[View all features](https://github.com/features)
+- BY COMPANY SIZE[Enterprises](https://github.com/enterprise)[Small and medium teams](https://github.com/team)[Startups](https://github.com/enterprise/startups)[Nonprofits](https://github.com/solutions/industry/nonprofits)
+- [Enterprises](https://github.com/enterprise)
+- [Small and medium teams](https://github.com/team)
+
+## Navigation Menu
+
+- [Startups](https://github.com/enterprise/startups)
+- [Nonprofits](https://github.com/solutions/industry/nonprofits)
+- BY USE CASE[App Modernization](https://github.com/solutions/use-case/app-modernization)[DevSecOps](https://github.com/solutions/use-case/devsecops)[DevOps](https://github.com/solutions/use-case/devops)[CI/CD](https://github.com/solutions/use-case/ci-cd)[View all use cases](https://github.com/solutions/use-case)
+- [App Modernization](https://github.com/solutions/use-case/app-modernization)
+- [DevSecOps](https://github.com/solutions/use-case/devsecops)
+- [DevOps](https://github.com/solutions/use-case/devops)
+- [CI/CD](https://github.com/solutions/use-case/ci-cd)
+- [View all use cases](https://github.com/solutions/use-case)
+- BY INDUSTRY[Healthcare](https://github.com/solutions/industry/healthcare)[Financial services](https://github.com/solutions/industry/financial-services)[Manufacturing](https://github.com/solutions/industry/manufacturing)[Government](https://github.com/solutions/industry/government)[View all industries](https://github.com/solutions/industry)
+- [Healthcare](https://github.com/solutions/industry/healthcare)
+- [Financial services](https://github.com/solutions/industry/financial-services)
+- [Manufacturing](https://github.com/solutions/industry/manufacturing)
+- [Government](https://github.com/solutions/industry/government)
+- [View all industries](https://github.com/solutions/industry)
+- [Enterprises](https://github.com/enterprise)
+- [Small and medium teams](https://github.com/team)
+- [Startups](https://github.com/enterprise/startups)
+- [Nonprofits](https://github.com/solutions/industry/nonprofits)
+[Enterprises](https://github.com/enterprise)
+[Small and medium teams](https://github.com/team)
+[Startups](https://github.com/enterprise/startups)
+[Nonprofits](https://github.com/solutions/industry/nonprofits)
+- [App Modernization](https://github.com/solutions/use-case/app-modernization)
+- [DevSecOps](https://github.com/solutions/use-case/devsecops)
+- [DevOps](https://github.com/solutions/use-case/devops)
+- [CI/CD](https://github.com/solutions/use-case/ci-cd)
+- [View all use cases](https://github.com/solutions/use-case)
+[App Modernization](https://github.com/solutions/use-case/app-modernization)
+[DevSecOps](https://github.com/solutions/use-case/devsecops)
+[DevOps](https://github.com/solutions/use-case/devops)
+[CI/CD](https://github.com/solutions/use-case/ci-cd)
+[View all use cases](https://github.com/solutions/use-case)
+- [Healthcare](https://github.com/solutions/industry/healthcare)
+- [Financial services](https://github.com/solutions/industry/financial-services)
+- [Manufacturing](https://github.com/solutions/industry/manufacturing)
+- [Government](https://github.com/solutions/industry/government)
+- [View all industries](https://github.com/solutions/industry)
+[Healthcare](https://github.com/solutions/industry/healthcare)
+[Financial services](https://github.com/solutions/industry/financial-services)
+[Manufacturing](https://github.com/solutions/industry/manufacturing)
+[Government](https://github.com/solutions/industry/government)
+[View all industries](https://github.com/solutions/industry)
+[View all solutions](https://github.com/solutions)
+- EXPLORE BY TOPIC[AI](https://github.com/resources/articles?topic=ai)[Software Development](https://github.com/resources/articles?topic=software-development)[DevOps](https://github.com/resources/articles?topic=devops)[Security](https://github.com/resources/articles?topic=security)[View all topics](https://github.com/resources/articles)
+- [AI](https://github.com/resources/articles?topic=ai)
+- [Software Development](https://github.com/resources/articles?topic=software-development)
+- [DevOps](https://github.com/resources/articles?topic=devops)
+- [Security](https://github.com/resources/articles?topic=security)
+- [View all topics](https://github.com/resources/articles)
+- EXPLORE BY TYPE[Customer stories](https://github.com/customer-stories)[Events & webinars](https://github.com/resources/events)[Ebooks & reports](https://github.com/resources/whitepapers)[Business insights](https://github.com/solutions/executive-insights)[GitHub Skills](https://skills.github.com)
+- [Customer stories](https://github.com/customer-stories)
+- [Events & webinars](https://github.com/resources/events)
+- [Ebooks & reports](https://github.com/resources/whitepapers)
+- [Business insights](https://github.com/solutions/executive-insights)
+- [GitHub Skills](https://skills.github.com)
+
+## Navigation Menu
+
+- SUPPORT & SERVICES[Documentation](https://docs.github.com)[Customer support](https://support.github.com)[Community forum](https://github.com/orgs/community/discussions)[Trust center](https://github.com/trust-center)[Partners](https://github.com/partners)
+- [Documentation](https://docs.github.com)
+- [Customer support](https://support.github.com)
+- [Community forum](https://github.com/orgs/community/discussions)
+- [Trust center](https://github.com/trust-center)
+- [Partners](https://github.com/partners)
+- [AI](https://github.com/resources/articles?topic=ai)
+- [Software Development](https://github.com/resources/articles?topic=software-development)
+- [DevOps](https://github.com/resources/articles?topic=devops)
+- [Security](https://github.com/resources/articles?topic=security)
+- [View all topics](https://github.com/resources/articles)
+[AI](https://github.com/resources/articles?topic=ai)
+[Software Development](https://github.com/resources/articles?topic=software-development)
+[DevOps](https://github.com/resources/articles?topic=devops)
+[Security](https://github.com/resources/articles?topic=security)
+[View all topics](https://github.com/resources/articles)
+- [Customer stories](https://github.com/customer-stories)
+- [Events & webinars](https://github.com/resources/events)
+- [Ebooks & reports](https://github.com/resources/whitepapers)
+- [Business insights](https://github.com/solutions/executive-insights)
+- [GitHub Skills](https://skills.github.com)
+[Customer stories](https://github.com/customer-stories)
+[Events & webinars](https://github.com/resources/events)
+[Ebooks & reports](https://github.com/resources/whitepapers)
+[Business insights](https://github.com/solutions/executive-insights)
+[GitHub Skills](https://skills.github.com)
+- [Documentation](https://docs.github.com)
+- [Customer support](https://support.github.com)
+- [Community forum](https://github.com/orgs/community/discussions)
+- [Trust center](https://github.com/trust-center)
+- [Partners](https://github.com/partners)
+[Documentation](https://docs.github.com)
+[Customer support](https://support.github.com)
+[Community forum](https://github.com/orgs/community/discussions)
+[Trust center](https://github.com/trust-center)
+[Partners](https://github.com/partners)
+[View all resources](https://github.com/resources)
+- COMMUNITY[GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)
+- [GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)
+- PROGRAMS[Security Lab](https://securitylab.github.com)[Maintainer Community](https://maintainers.github.com)[Accelerator](https://github.com/open-source/accelerator)[GitHub Stars](https://stars.github.com)[Archive Program](https://archiveprogram.github.com)
+- [Security Lab](https://securitylab.github.com)
+- [Maintainer Community](https://maintainers.github.com)
+- [Accelerator](https://github.com/open-source/accelerator)
+- [GitHub Stars](https://stars.github.com)
+- [Archive Program](https://archiveprogram.github.com)
+- REPOSITORIES[Topics](https://github.com/topics)[Trending](https://github.com/trending)[Collections](https://github.com/collections)
+- [Topics](https://github.com/topics)
+- [Trending](https://github.com/trending)
+- [Collections](https://github.com/collections)
+- [GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)
+[GitHub SponsorsFund open source developers](https://github.com/open-source/sponsors)
+- [Security Lab](https://securitylab.github.com)
+- [Maintainer Community](https://maintainers.github.com)
+- [Accelerator](https://github.com/open-source/accelerator)
+- [GitHub Stars](https://stars.github.com)
+- [Archive Program](https://archiveprogram.github.com)
+[Security Lab](https://securitylab.github.com)
+[Maintainer Community](https://maintainers.github.com)
+[Accelerator](https://github.com/open-source/accelerator)
+[GitHub Stars](https://stars.github.com)
+[Archive Program](https://archiveprogram.github.com)
+- [Topics](https://github.com/topics)
+- [Trending](https://github.com/trending)
+- [Collections](https://github.com/collections)
+[Topics](https://github.com/topics)
+[Trending](https://github.com/trending)
+[Collections](https://github.com/collections)
+- ENTERPRISE SOLUTIONS[Enterprise platformAI-powered developer platform](https://github.com/enterprise)
+- [Enterprise platformAI-powered developer platform](https://github.com/enterprise)
+
+## Navigation Menu
+
+- AVAILABLE ADD-ONS[GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)[Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)[Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+- [GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)
+- [Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)
+- [Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+- [Enterprise platformAI-powered developer platform](https://github.com/enterprise)
+[Enterprise platformAI-powered developer platform](https://github.com/enterprise)
+- [GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)
+- [Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)
+- [Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+[GitHub Advanced SecurityEnterprise-grade security features](https://github.com/security/advanced-security)
+[Copilot for BusinessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)
+[Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+[Pricing](https://github.com/pricing)
+[Sign in](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2FMdIbuA%2Fmurf-livekit-starter%2Ftree%2Fmain%2Ffrontend)
+[Sign up](https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Ffiles%2Fdisambiguate&source=header-repo&source_repo=MdIbuA%2Fmurf-livekit-starter)
+[Reload](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend)
+[Reload](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend)
+[Reload](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend)
+[MdIbuA](https://github.com/MdIbuA)
+[murf-livekit-starter](https://github.com/MdIbuA/murf-livekit-starter)
+[murf-ai/murf-livekit-starter](https://github.com/murf-ai/murf-livekit-starter)
+- 
+            [Notifications](https://github.com/login?return_to=%2FMdIbuA%2Fmurf-livekit-starter)    You must be signed in to change notification settings
+
+
+- 
+          [Fork
+    0](https://github.com/login?return_to=%2FMdIbuA%2Fmurf-livekit-starter)
+
+- 
+
+        [Star
+          0](https://github.com/login?return_to=%2FMdIbuA%2Fmurf-livekit-starter)
+
+[Notifications](https://github.com/login?return_to=%2FMdIbuA%2Fmurf-livekit-starter)
+[Fork
+    0](https://github.com/login?return_to=%2FMdIbuA%2Fmurf-livekit-starter)
+[Star
+          0](https://github.com/login?return_to=%2FMdIbuA%2Fmurf-livekit-starter)
+- 
+  [Code](https://github.com/MdIbuA/murf-livekit-starter)
+- 
+  [Pull requests
+          0](https://github.com/MdIbuA/murf-livekit-starter/pulls)
+- 
+  [Actions](https://github.com/MdIbuA/murf-livekit-starter/actions)
+- 
+  [Projects](https://github.com/MdIbuA/murf-livekit-starter/projects)
+- 
+  [Security and quality
+          0](https://github.com/MdIbuA/murf-livekit-starter/security)
+- 
+  [Insights](https://github.com/MdIbuA/murf-livekit-starter/pulse)
+[Code](https://github.com/MdIbuA/murf-livekit-starter)
+[Pull requests
+          0](https://github.com/MdIbuA/murf-livekit-starter/pulls)
+[Actions](https://github.com/MdIbuA/murf-livekit-starter/actions)
+[Projects](https://github.com/MdIbuA/murf-livekit-starter/projects)
+[Security and quality
+          0](https://github.com/MdIbuA/murf-livekit-starter/security)
+[Insights](https://github.com/MdIbuA/murf-livekit-starter/pulse)
+- 
+
+
+    [Code](https://github.com/MdIbuA/murf-livekit-starter)
+
+
+- 
+
+
+    [Pull requests](https://github.com/MdIbuA/murf-livekit-starter/pulls)
+
+
+- 
+
+
+    [Actions](https://github.com/MdIbuA/murf-livekit-starter/actions)
+
+
+- 
+
+
+    [Projects](https://github.com/MdIbuA/murf-livekit-starter/projects)
+
+
+- 
+
+
+    [Security and quality](https://github.com/MdIbuA/murf-livekit-starter/security)
+
+
+- 
+
+
+    [Insights](https://github.com/MdIbuA/murf-livekit-starter/pulse)
+
+
+[Code](https://github.com/MdIbuA/murf-livekit-starter)
+[Pull requests](https://github.com/MdIbuA/murf-livekit-starter/pulls)
+[Actions](https://github.com/MdIbuA/murf-livekit-starter/actions)
+[Projects](https://github.com/MdIbuA/murf-livekit-starter/projects)
+
+## Navigation Menu
+[Security and quality](https://github.com/MdIbuA/murf-livekit-starter/security)
+[Insights](https://github.com/MdIbuA/murf-livekit-starter/pulse)
+
+## Breadcrumbs
+1. [murf-livekit-starter](https://github.com/MdIbuA/murf-livekit-starter/tree/main)
+[murf-livekit-starter](https://github.com/MdIbuA/murf-livekit-starter/tree/main)
+
+## History
+[History](https://github.com/MdIbuA/murf-livekit-starter/commits/main/frontend)
+
+## Breadcrumbs
+1. [murf-livekit-starter](https://github.com/MdIbuA/murf-livekit-starter/tree/main)
+[murf-livekit-starter](https://github.com/MdIbuA/murf-livekit-starter/tree/main)
+
+### parent directory
+
+[..](https://github.com/MdIbuA/murf-livekit-starter/tree/main)
+[.github/workflows](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/.github/workflows)
+[.github/workflows](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/.github/workflows)
+[app](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/app)
+[app](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/app)
+[components](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/components)
+[components](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/components)
+[fonts](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/fonts)
+[fonts](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/fonts)
+[hooks](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/hooks)
+[hooks](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/hooks)
+[lib](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/lib)
+[lib](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/lib)
+[public](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/public)
+[public](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/public)
+[styles](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/styles)
+[styles](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend/styles)
+[.env.example](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.env.example)
+[.env.example](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.env.example)
+[.eslintrc.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.eslintrc.json)
+[.eslintrc.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.eslintrc.json)
+[.gitignore](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.gitignore)
+[.gitignore](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.gitignore)
+[.prettierignore](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.prettierignore)
+[.prettierignore](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.prettierignore)
+[.prettierrc](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.prettierrc)
+[.prettierrc](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/.prettierrc)
+[LICENSE](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/LICENSE)
+[LICENSE](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/LICENSE)
+[README.md](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/README.md)
+[README.md](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/README.md)
+[app-config.ts](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/app-config.ts)
+[app-config.ts](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/app-config.ts)
+[components.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/components.json)
+[components.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/components.json)
+[eslint.config.mjs](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/eslint.config.mjs)
+[eslint.config.mjs](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/eslint.config.mjs)
+[next.config.ts](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/next.config.ts)
+[next.config.ts](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/next.config.ts)
+[package.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/package.json)
+[package.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/package.json)
+[pnpm-lock.yaml](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/pnpm-lock.yaml)
+[pnpm-lock.yaml](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/pnpm-lock.yaml)
+[postcss.config.mjs](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/postcss.config.mjs)
+[postcss.config.mjs](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/postcss.config.mjs)
+[taskfile.yaml](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/taskfile.yaml)
+[taskfile.yaml](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/taskfile.yaml)
+[tsconfig.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/tsconfig.json)
+
+### parent directory
+
+[tsconfig.json](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/tsconfig.json)
+
+## [README.md](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend#readme)
+
+[README.md](https://github.com/MdIbuA/murf-livekit-starter/tree/main/frontend#readme)
+
+# Frontend — Voice Agent UI
+
+The React/Next.js frontend for the Voice Agent Starter. Built with [LiveKit Agents UI](https://livekit.io/ui) components, it provides a polished interface for real-time voice conversations with your agent.
+
+### Features
+
+- Real-time voice interaction with LiveKit Agents
+- Camera video streaming support
+- Screen sharing capabilities
+- Multiple audio visualizer styles (bar, grid, radial, wave, aura)
+- Light/dark theme switching with system preference detection
+- Customizable branding, colors, and UI text via configuration
+
+```
+bar
+```
+
+
+```
+grid
+```
+
+
+```
+radial
+```
+
+
+```
+wave
+```
+
+
+```
+aura
+```
+
+### 1. Install dependencies
+```
+cd frontend pnpm install
+```
+
+### 2. Configure environment
+```
+cp .env.example .env.local
+```
+
+Fill in your LiveKit credentials (same project as the backend):
+
+```
+LIVEKIT_URL=wss://your-project.livekit.cloud LIVEKIT_API_KEY=your_key LIVEKIT_API_SECRET=your_secret AGENT_NAME=my-agent
+```
+
+### 3. Run
+```
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). Make sure your backend agent is running too.
+
+### Branding & UI (app-config.ts)
+```
+app-config.ts
+```
+
+Edit [app-config.ts](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/app-config.ts) to change branding, features, and button text:
+
+```
+app-config.ts
+```
+
+
+```
+export const APP_CONFIG_DEFAULTS: AppConfig = { companyName: 'Murf AI', pageTitle: 'Voice Agent Starter', pageDescription: 'A voice agent powered by Murf Falcon — the fastest TTS API', supportsChatInput: true, supportsVideoInput: true, supportsScreenShare: true, logo: '/murf-logo.svg', accent: '#6366F1', logoDark: '/murf-logo-dark.svg', accentDark: '#818cf8', startButtonText: 'Start talking', agentName: process.env.AGENT_NAME ?? undefined, };
+```
+
+### Audio visualizers
+Set audioVisualizerType in [app-config.ts](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/app-config.ts):
+
+```
+audioVisualizerType
+```
+
+
+```
+app-config.ts
+```
+
+
+```
+bar
+```
+
+
+```
+audioVisualizerBarCount
+```
+
+
+```
+grid
+```
+
+
+```
+audioVisualizerGridRowCount
+```
+
+
+```
+audioVisualizerGridColumnCount
+```
+
+
+```
+radial
+```
+
+
+```
+audioVisualizerRadialBarCount
+```
+
+
+```
+audioVisualizerRadialRadius
+```
+
+
+```
+wave
+```
+
+
+```
+audioVisualizerWaveLineWidth
+```
+
+
+```
+aura
+```
+
+
+```
+audioVisualizerAuraColorShift
+```
+
+Use audioVisualizerColor / audioVisualizerColorDark to set accent colors across all modes.
+
+```
+audioVisualizerColor
+```
+
+
+```
+audioVisualizerColorDark
+```
+
+### Editing components
+All UI components are local and fully editable:
+- components/agents-ui/ — Core UI: media controls, audio visualizers, chat transcript, session provider
+- components/app/ — App-level logic: view transitions, welcome screen, theming
+- components/ui/ — Primitive shadcn/ui components (button, select, tooltip, etc.)
+
+```
+components/agents-ui/
+```
+
+
+```
+components/app/
+```
+
+
+```
+components/ui/
+```
+
+To update Agents UI components to the latest version:
+
+```
+pnpm shadcn:install
+```
+
+## Project Structure
+
+```
+frontend/ ├── app/ │ ├── page.tsx # Main page │ ├── layout.tsx # Root layout │ └── api/token/route.ts # LiveKit token endpoint ├── components/ │ ├── agents-ui/ # Agents UI components (visualizers, controls, chat) │ ├── app/ # App components (welcome view, theme, controller) │ ├── ai-elements/ # AI conversation elements │ └── ui/ # Primitive shadcn/ui components ├── hooks/ # React hooks (audio visualizers, controls) ├── lib/ # Utilities ├── public/ # Static assets (logos, fonts) ├── styles/ # Global CSS ├── app-config.ts # Branding & feature configuration └── package.json # Dependencies (pnpm)
+```
+
+
+```
+frontend/ ├── app/ │ ├── page.tsx # Main page │ ├── layout.tsx # Root layout │ └── api/token/route.ts # LiveKit token endpoint ├── components/ │ ├── agents-ui/ # Agents UI components (visualizers, controls, chat) │ ├── app/ # App components (welcome view, theme, controller) │ ├── ai-elements/ # AI conversation elements │ └── ui/ # Primitive shadcn/ui components ├── hooks/ # React hooks (audio visualizers, controls) ├── lib/ # Utilities ├── public/ # Static assets (logos, fonts) ├── styles/ # Global CSS ├── app-config.ts # Branding & feature configuration └── package.json # Dependencies (pnpm)
+```
+
+### Vercel
+
+Set these environment variables:
+- LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET
+- AGENT_NAME (optional — for explicit agent dispatch)
+
+```
+LIVEKIT_URL
+```
+
+
+```
+LIVEKIT_API_KEY
+```
+
+
+```
+LIVEKIT_API_SECRET
+```
+
+
+```
+AGENT_NAME
+```
+
+The frontend and backend don't call each other directly — they both connect to LiveKit, which handles real-time audio transport. Use the same LiveKit project credentials on both.
+
+## Links
+- [LiveKit Agents UI](https://livekit.io/ui)
+- [LiveKit JavaScript SDK](https://github.com/livekit/client-sdk-js)
+- [LiveKit Docs](https://docs.livekit.io)
+[LiveKit Agents UI](https://livekit.io/ui)
+[LiveKit JavaScript SDK](https://github.com/livekit/client-sdk-js)
+[LiveKit Docs](https://docs.livekit.io)
+
+## License
+MIT — see [LICENSE](https://github.com/MdIbuA/murf-livekit-starter/blob/main/frontend/LICENSE).
+
+### Footer navigation
+
+- 
+            [Terms](https://docs.github.com/site-policy/github-terms/github-terms-of-service)
+
+- 
+            [Privacy](https://docs.github.com/site-policy/privacy-policies/github-privacy-statement)
+
+- 
+            [Security](https://github.com/security)
+
+- 
+            [Status](https://www.githubstatus.com/)
+
+- 
+            [Community](https://github.community/)
+
+- 
+            [Docs](https://docs.github.com/)
+
+- 
+            [Contact](https://support.github.com?tags=dotcom-footer)
+
+- 
+
+
+       Manage cookies
+
+
+
+- 
+
+
+      Do not share my personal information
+
+
+
+[Terms](https://docs.github.com/site-policy/github-terms/github-terms-of-service)
+[Privacy](https://docs.github.com/site-policy/privacy-policies/github-privacy-statement)
+[Security](https://github.com/security)
+[Status](https://www.githubstatus.com/)
+[Community](https://github.community/)
+[Docs](https://docs.github.com/)
+[Contact](https://support.github.com?tags=dotcom-footer)

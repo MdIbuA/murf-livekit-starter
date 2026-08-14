@@ -153,3 +153,23 @@
 .km-pulse-speaking {
   animation: km-amber-pulse 1s ease-in-out infinite;
 }
+
+/* Kisan Mitra – Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.55 0.18 145 / 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.65 0.20 145 / 0.8);
+}
+
