@@ -1,4 +1,4 @@
-# Kisan Mitra (கான் மித்ரா) — AgriTech Voice AI Assistant
+# Kisan Mitra (கிசான் மித்ரா) — AgriTech Voice AI Assistant
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Murf Falcon](https://img.shields.io/badge/TTS-Murf%20Falcon-6366F1)](https://murf.ai/api/docs/text-to-speech/streaming) [![LiveKit](https://img.shields.io/badge/Transport-LiveKit-002cf2)](https://docs.livekit.io) [![Deepgram](https://img.shields.io/badge/STT-Deepgram%20Nova--3-13EF95)](https://deepgram.com) [![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini-4285F4)](https://ai.google.dev/) [![VoiceForBharat](https://img.shields.io/badge/%23VoiceForBharat-10%20Days%20Challenge-FF9933)](https://murf.ai)
 
