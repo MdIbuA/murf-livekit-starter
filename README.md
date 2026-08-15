@@ -8,7 +8,7 @@ Built as part of the **10 Days of Voice Agents — VoiceForBharat Edition** chal
 
 ---
 
-![Kisan Mitra UI Dashboard](./assets/kisan_mitra_ui_screenshot.jpg)
+![Kisan Mitra UI Dashboard](./assets/kisan_mitra_ui_screenshot.png)
 
 ---
 
