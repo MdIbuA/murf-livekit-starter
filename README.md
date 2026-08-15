@@ -1,278 +1,206 @@
-# Voice Agent Starter — Powered by Murf Falcon
+# Kisan Mitra (கான் மித்ரா) — AgriTech Voice AI Assistant
 
-Build a production voice AI agent in 5 minutes. Powered by the fastest TTS on the market - swap the system prompt to build anything from customer support to language tutors.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Murf Falcon](https://img.shields.io/badge/TTS-Murf%20Falcon-6366F1)](https://murf.ai/api/docs/text-to-speech/streaming) [![LiveKit](https://img.shields.io/badge/Transport-LiveKit-002cf2)](https://docs.livekit.io) [![Deepgram](https://img.shields.io/badge/STT-Deepgram%20Nova--3-13EF95)](https://deepgram.com) [![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini-4285F4)](https://ai.google.dev/) [![VoiceForBharat](https://img.shields.io/badge/%23VoiceForBharat-10%20Days%20Challenge-FF9933)](https://murf.ai)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Murf Falcon](https://img.shields.io/badge/TTS-Murf%20Falcon-6366F1)](https://murf.ai/api/docs/text-to-speech/streaming) [![LiveKit](https://img.shields.io/badge/Transport-LiveKit-002cf2)](https://docs.livekit.io) [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+> **Kisan Mitra** is an ultra-low latency, multilingual voice AI assistant built for Tamil Nadu farmers. Powered by **Murf Falcon TTS**, **LiveKit Agents**, **Deepgram Nova-3**, and **Google Gemini**, it provides real-time mandi prices, weather forecasts, explicit-consent memory, human officer escalations, and specialist crop doctor handoffs over natural voice conversations in Tamil and English.
 
----
-
-## Why Murf Falcon
-
-- **55ms model latency** - fastest production TTS
-- **130ms time-to-first-audio** across 10+ global regions
-- **$0.01/1000 characters** - up to 10x cheaper than alternatives
-- **150+ voices** across 35+ languages
-- **99.38% pronunciation accuracy**
+Built as part of the **10 Days of Voice Agents — VoiceForBharat Edition** challenge by Murf AI.
 
 ---
 
-## Architecture
+![Kisan Mitra UI Dashboard](./assets/kisan_mitra_ui_screenshot.jpg)
+
+---
+
+## 🌾 Why Kisan Mitra?
+
+In rural India, millions of farmers struggle with critical agricultural decisions due to digital and literacy barriers:
+- **Unpredictable Mandi Prices:** Farmers sell produce without knowing live wholesale prices, risking financial losses.
+- **Weather Uncertainty:** Applying expensive pesticides right before unexpected rain leads to wasted chemical inputs.
+- **Complex Text Interfaces:** Traditional mobile apps require navigating English menus. Voice is the natural interface for field conditions.
+
+**Kisan Mitra** solves this by offering a conversational voice assistant that speaks authentic Tamil, remembers caller context with explicit consent, fetches live government data, and seamlessly hands off plant disease queries to specialized crop doctors.
+
+---
+
+## 🛠️ Architecture & Data Flow
 
 ```mermaid
-flowchart LR
-    A[🎙️ User speaks] -->|audio| B[Deepgram STT]
-    B -->|text| C[LLM]
-    C -->|response text| D[Murf Falcon TTS]
-    D -->|audio| E[LiveKit]
-    E -->|stream| F[🔊 User hears]
+flowchart TD
+    User["🎙️ Farmer (Caller)"] <-->|WebRTC / SIP Audio Stream| LiveKit["⚡ LiveKit Agents SDK\n(Silero VAD + Turn Detector)"]
+    
+    subgraph Voice Pipeline
+        LiveKit -->|Audio Bytes| STT["🗣️ Deepgram Nova-3 STT\n(Multilingual Tamil/English)"]
+        STT -->|Transcribed Text| LLM["🧠 Google Gemini 3.5 Flash\n(Kisan Mitra Orchestrator)"]
+        LLM -->|Tamil Unicode Response| TTS["🔊 Murf Falcon TTS\n(Native Tamil Streaming Voice)"]
+        TTS -->|Low-Latency Audio| LiveKit
+    end
 
-    style A fill:#444441,stroke:#888780,color:#fff
-    style B fill:#185FA5,stroke:#85B7EB,color:#fff
-    style C fill:#534AB7,stroke:#AFA9EC,color:#fff
-    style D fill:#0F6E56,stroke:#5DCAA5,color:#fff
-    style E fill:#D85A30,stroke:#F0997B,color:#fff
-    style F fill:#444441,stroke:#888780,color:#fff
+    subgraph Data & Tool Integrations
+        LLM <-->|Consent Profile Store| DB[("💾 SQLite Database\n(Farmer Profiles & Call Analytics)")]
+        LLM -->|IMD Weather API| Weather["🌤️ Open-Meteo API\n(27+ TN Districts)"]
+        LLM -->|Official Mandi Prices| Mandi["📊 Agmarknet API\n(data.gov.in)"]
+        LLM -->|Emergency Escalation| Discord["🚨 KVK Discord Webhook\n(Human Officer Alert)"]
+    end
+
+    subgraph Agent Handoff
+        LLM <-->|ctx.session.update_agent| Specialist["👨‍⚕️ CropDoctorAgent\n(Pest & Disease Specialist)"]
+    end
 ```
 
 ---
 
-## Quickstart
+## 🚀 10-Day Building Journey Breakdown
 
-### Prerequisites
+### Day 1: Foundation & Low-Latency Murf Falcon TTS Integration
+- Configured LiveKit Agents SDK with **Murf Falcon TTS** (`voice="Anisha"` / native Tamil locale) and Deepgram Nova-3 STT.
+- Achieved sub-300ms end-to-end streaming audio latency.
 
-- **Python** 3.10+
-- **[uv](https://docs.astral.sh/uv/)** - fast Python package manager
-  ```bash
-  # macOS/Linux
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  # Windows (PowerShell)
-  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+### Day 2: Native Tamil Unicode Guardrails & Personality
+- Solved Tanglish phonetic distortion by enforcing strict system prompt guardrails requiring all spoken Tamil output in **pure Tamil Unicode script** (`தமிழ் எழுத்து`):
+  ```python
+  # Guardrail snippet:
+  "Whenever you speak Tamil, EVERY Tamil word MUST be written in Tamil Unicode script (e.g. வணக்கம் instead of 'Vanakkam')."
   ```
-- **Node.js** 18+
-- **pnpm** — fast Node package manager
-  ```bash
-  npm install -g pnpm
-  ```
-- A [LiveKit](https://cloud.livekit.io/) project (free tier available)
 
-### Step 1: Clone the repo
+### Day 3: Frontend UI & Audio Visualizer
+- Built Next.js web application utilizing **LiveKit Agents UI** components for real-time visual feedback (audio waveform, state badges, transcript stream).
 
-```bash
-git clone https://github.com/murf-ai/murf-livekit-starter.git
-cd murf-livekit-starter
-```
+### Day 4: Privacy-First Farmer Profile Memory (SQLite)
+- Integrated an SQLite database (`backend/src/db.py`) to save farmer profiles (name, district, crops, land size, last discussed topic).
+- **Hard Consent Mandate:** The agent *must* explicitly ask for permission aloud before saving any facts, and includes a `forget_farmer_profile` tool for instant data deletion.
 
-### Step 2: Set up environment variables
+### Day 5: Real-Data Tools (IMD Weather & Agmarknet Mandi Prices)
+- Integrated `get_weather_forecast` via Open-Meteo for 27+ Tamil Nadu districts.
+- Integrated `get_crop_market_price` fetching official wholesale mandi prices (₹/quintal) from Agmarknet (data.gov.in).
 
-Create `.env.local` in both `backend/` and `frontend/` (copy from `.env.example` in each). You need:
+### Day 6: SIP Telephony & Voice Activity Tuning
+- Tuned **Silero VAD** thresholds and configured `BVCTelephony` noise suppression for incoming phone calls via LiveKit SIP trunks.
 
-| Variable                               | Where to get it                                        | Required |
-| -------------------------------------- | ------------------------------------------------------ | -------- |
-| `LIVEKIT_URL`                          | LiveKit Cloud dashboard                                | Yes      |
-| `LIVEKIT_API_KEY`                      | LiveKit Cloud dashboard                                | Yes      |
-| `LIVEKIT_API_SECRET`                   | LiveKit Cloud dashboard                                | Yes      |
-| `MURF_API_KEY`                         | [murf.ai/api/dashboard](https://murf.ai/api/dashboard) | Yes      |
-| `DEEPGRAM_API_KEY`                     | [deepgram.com](https://deepgram.com)                   | Yes      |
-| `GOOGLE_API_KEY` (or `OPENAI_API_KEY`) | Depends on LLM choice                                  | Yes      |
+### Day 7: Human Escalation & Discord Dispatch System
+- Built `create_escalation` to handle severe crop emergencies (e.g., mass wilting, locust attacks) or missing market data for urgent decisions.
+- Auto-scrubs sensitive PII (OTPs, Aadhaar, account numbers) using regex sanitization.
+- Generates reference IDs (e.g., `KM-20260812-0001`) and fires a rich **Discord Webhook** alert to KVK (Krishi Vigyan Kendra) officers.
 
-### Step 3: Install backend dependencies
+### Day 8: Telemetry & Call Analytics Dashboard
+- Automated per-session call logs recording duration, channel (Browser vs SIP), tools called, topics discussed, and outcome status (`success` vs `failed`).
 
-```bash
-cd backend
-uv sync
-uv run python src/agent.py download-files
-```
+### Day 9: Stateful Specialist Agent Handoff
+- Implemented live bidirectional handoff between main `Kisan Mitra` and `CropDoctorAgent` (Pest & Disease Specialist) using `ctx.session.update_agent()`.
+- Preserves full caller context during handoff without asking repeated questions.
 
-### Step 4: Install frontend dependencies
-
-```bash
-cd frontend
-pnpm install
-```
-
-### Step 5: Run it
-
-**Option A - All-in-one (from repo root):**
-
-```bash
-# macOS/Linux
-chmod +x start_app.sh
-./start_app.sh
-
-# Windows (PowerShell)
-.\start_app.ps1
-```
-
-**Option B - Separate terminals:**
-
-```bash
-# Terminal 1 — LiveKit Server
-livekit-server --dev
-
-# Terminal 2 — Backend agent
-cd backend && uv run python src/agent.py dev
-
-# Terminal 3 — Frontend
-cd frontend && pnpm dev
-```
-
-Then open **http://localhost:3000** in your browser.
-
-You should now see the voice agent UI. Click **Start talking**, allow microphone access, and speak — the agent will respond with Murf Falcon TTS. Ensure your backend and (if using Option B) LiveKit server are running.
+### Day 10: Evaluation & Comprehensive Documentation
+- Built LLM-as-judge evaluation tests using LiveKit testing framework (`uv run pytest`).
+- Released comprehensive blog post, documentation, and open-source starter repo.
 
 ---
 
-## Deploy
-
-Want to deploy this beyond localhost? You'll need to deploy **two services**: the backend agent and the frontend. Both must use the same LiveKit project.
-
-> This is a two-service app — the backend agent and the frontend UI deploy separately. You'll need both running and connected to the same LiveKit project.
-
-### Backend (Python agent) — Deploy to Railway
-
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/tIVCF1?referralCode=cNjn2P&utm_medium=integration&utm_source=template&utm_campaign=generic)
-
-Set these environment variables in Railway:
-
-- `MURF_API_KEY`
-- `DEEPGRAM_API_KEY`
-- `GOOGLE_API_KEY` or `OPENAI_API_KEY`
-- `LIVEKIT_URL`
-- `LIVEKIT_API_KEY`
-- `LIVEKIT_API_SECRET`
-
-The backend runs as a long-lived Python process that connects to LiveKit as an agent. Railway handles this well.
-
-### Frontend (Next.js) — Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/murf-ai/murf-livekit-starter&root-directory=frontend&env=LIVEKIT_URL,LIVEKIT_API_KEY,LIVEKIT_API_SECRET&project-name=murf-voice-agent&repository-name=murf-voice-agent)
-
-Set these environment variables in Vercel:
-
-- `LIVEKIT_URL`
-- `LIVEKIT_API_KEY`
-- `LIVEKIT_API_SECRET`
-- `AGENT_NAME` (optional — for explicit agent dispatch)
-
-The frontend is a standard Next.js app. Point it at the same LiveKit instance your backend agent is connected to.
-
-### Connecting them
-
-The frontend and backend don't call each other directly — they both connect to **LiveKit**, which handles the real-time audio transport.
-
-1. Use the **same** `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET` on both Railway and Vercel
-2. Set `AGENT_NAME=my-agent` on Vercel — this matches the `agent_name="my-agent"` registered in `backend/src/agent.py`
-3. Verify: Railway logs should show the agent connected to LiveKit. Open your Vercel URL, click **Start talking** — the agent should respond
-
-If the agent doesn't connect, double-check that both services point to the same LiveKit project and that the backend is running (check Railway logs).
-
----
-
-## Change the Use Case
-
-The default system prompt makes this a **customer support agent**. You can change the agent’s behavior by editing the prompt.
-
-**Where the prompt lives:** `backend/src/agent.py`- the `SYSTEM_PROMPT` constant (near the top of the file, after the imports). Change that string to change what your voice agent does.
-
-### Example prompts (copy-paste)
-
-**Customer Support (default):**
-
-```
-You are a friendly and efficient customer support agent for a tech company. Help users with account issues, billing questions, and product troubleshooting. Be concise, empathetic, and solution-oriented. If you don't know something, say so honestly and offer to escalate.
-```
-
-**Language Tutor:**
-
-```
-You are a patient and encouraging language tutor helping the user practice conversational Spanish. Speak primarily in Spanish but switch to English to explain grammar or vocabulary when needed. Correct mistakes gently and suggest better phrasing. Keep conversations natural and fun.
-```
-
-**AI Receptionist:**
-
-```
-You are a professional receptionist for a medical clinic. Help callers schedule appointments, answer questions about office hours and services, and take messages for doctors. Be warm but efficient. Ask for the caller's name and reason for calling upfront.
-```
-
-See the Configuration section below for voice, STT, and LLM options.
-
----
-
-## Configuration
-
-### Murf voice
-
-Edit the `tts=murf.TTS(...)` call in `backend/src/agent.py`. Set the `voice` argument to any Murf voice ID. Examples:
-
-- `Anisha` — Indian English (female, default in this starter)
-- `Pooja` — Indian English (female)
-- `Samar` — Indian English (male)
-- `Amara` — US English (female)
-- `Gordon` — US English (male)
-- `Hazel` — UK English (female)
-- `Bertie` — UK English (male)
-
-Browse all voices: [Murf Voice Library](https://murf.ai/api/docs/voices-styles/voice-library).
-
-### STT provider
-
-STT is configured in `backend/src/agent.py` in the `AgentSession(stt=...)` call. The default is Deepgram (`deepgram.STT(model="nova-3")`). You can swap to another LiveKit-compatible STT plugin if needed.
-
-### LLM (Gemini vs OpenAI)
-
-- **Gemini (default):** Set `GOOGLE_API_KEY` and use `llm=google.LLM(model="gemini-3.5-flash-lite")` in `agent.py`.
-- **OpenAI:** Set `OPENAI_API_KEY`, add the OpenAI plugin, and use the corresponding `llm=openai.LLM(...)` in `agent.py`.
-
-### Audio format
-
-Murf Falcon and LiveKit handle audio format internally. For advanced options, see [Murf API docs](https://murf.ai/api/docs) and [LiveKit docs](https://docs.livekit.io).
-
----
-
-## Project Structure
+## 🛠️ Project Structure
 
 ```
 murf-livekit-starter/
-├── backend/                 # Python voice agent (LiveKit Agents + Murf Falcon)
+├── backend/                     # Python voice agent (LiveKit + Murf Falcon)
 │   ├── src/
-│   │   └── agent.py         # Agent entrypoint, pipeline (STT/LLM/TTS), system prompt
-│   ├── tests/               # Agent tests
-│   ├── .env.example         # Backend env template
-│   ├── pyproject.toml       # Python deps (uv)
-│   └── railway.toml         # Railway deploy config
-├── frontend/                # Next.js UI for voice sessions
-│   ├── app/
-│   │   ├── page.tsx         # Main page
-│   │   └── api/token/       # LiveKit token endpoint (dev)
-│   ├── components/          # UI (agents-ui, app config, theme)
-│   ├── app-config.ts        # Branding, title, button text, accent
-│   ├── .env.example         # Frontend env template
-│   └── package.json         # Node deps (pnpm)
-├── start_app.sh             # Start LiveKit + backend + frontend (macOS/Linux)
-├── start_app.ps1            # Start LiveKit + backend + frontend (Windows)
-├── README.md                # This file
+│   │   ├── agent.py             # Main entrypoint — Kisan Mitra & CropDoctorAgent pipeline
+│   │   ├── db.py                # SQLite database (Farmer profiles & Call analytics)
+│   │   └── tools.py             # Open-Meteo Weather, Agmarknet Mandi & Discord Webhook tools
+│   ├── tests/
+│   │   └── test_agent.py        # LLM-judged evaluation tests
+│   ├── pyproject.toml           # Python dependencies (managed via uv)
+│   └── .env.example             # Environment template
+├── frontend/                    # Next.js UI (LiveKit Agents UI)
+│   ├── app/                     # Pages & LiveKit token API route
+│   ├── components/              # Visualizers, connection controls, theme
+│   ├── app-config.ts            # Branding & feature flags
+│   └── package.json             # Node dependencies (pnpm / npm)
+├── assets/                      # Screenshots & media assets
+│   └── kisan_mitra_ui_screenshot.jpg
+├── start_app.ps1                # All-in-one startup script (Windows PowerShell)
+├── start_app.sh                 # All-in-one startup script (macOS / Linux)
+└── README.md                    # Project documentation
 ```
 
-For deeper documentation on each part, see:
+---
 
-- [Backend Documentation](./backend/README.md) — agent pipeline, voice/LLM/STT configuration, testing, deployment
-- [Frontend Documentation](./frontend/README.md) — UI customization, visualizers, theming, component architecture
+## ⚡ Quickstart
+
+### Prerequisites
+- **Python 3.10+** with [`uv`](https://docs.astral.sh/uv/)
+- **Node.js 18+** with `pnpm` or `npm`
+- Free API keys for LiveKit Cloud, Murf AI, Deepgram, and Google Gemini
+
+### 1. Clone Repository & Setup Environment
+```bash
+git clone https://github.com/murf-ai/murf-livekit-starter.git
+cd murf-livekit-starter
+
+# Copy environment files
+cp backend/.env.example backend/.env.local
+cp frontend/.env.example frontend/.env.local
+```
+
+Configure your `backend/.env.local`:
+```env
+LIVEKIT_URL=wss://your-livekit-project.livekit.cloud
+LIVEKIT_API_KEY=your_livekit_api_key
+LIVEKIT_API_SECRET=your_livekit_api_secret
+MURF_API_KEY=your_murf_api_key
+DEEPGRAM_API_KEY=your_deepgram_api_key
+GOOGLE_API_KEY=your_gemini_api_key
+DISCORD_WEBHOOK_URL=your_optional_discord_webhook_url
+```
+
+### 2. Start Application
+
+**Option A — Automated Script (Recommended):**
+```powershell
+# Windows PowerShell
+.\start_app.ps1
+```
+```bash
+# macOS / Linux
+chmod +x start_app.sh
+./start_app.sh
+```
+
+**Option B — Manual Terminal Setup:**
+```bash
+# Terminal 1 — Backend Agent
+cd backend
+uv sync
+uv run python src/agent.py dev
+
+# Terminal 2 — Frontend UI
+cd frontend
+pnpm install
+pnpm dev
+```
+
+Open **`http://localhost:3000`** in your browser and click **Connect** to start talking!
 
 ---
 
-## Links
+## 🧪 Testing & Evaluation
 
-- [Murf API Docs](https://murf.ai/api/docs)
-- [Murf Voice Library](https://murf.ai/api/docs/voices-styles/voice-library)
-- [LiveKit Docs](https://docs.livekit.io)
-- [Deepgram Docs](https://developers.deepgram.com)
-- [Murf Falcon Benchmarks](https://murf.ai/falcon/benchmarks)
-- [TTS Latency Benchmarker](https://github.com/sahilsgupta/tts-latency-benchmarker) — run your own p50/p95 tests across providers
-- [Murf Discord](https://discord.gg/FbKAy96Sz7)
-- [Murf Startup Incubator](https://murf.ai/api) — 50M free characters for startups
+Run LLM-as-judge evaluation tests:
+```bash
+cd backend
+uv run pytest
+```
+Tests evaluate agent friendliness, grounding, refuse-harmful behavior, and function calling without mocks.
 
 ---
 
-## License
+## 🤝 Acknowledgments & References
 
-MIT
+- **Murf Falcon TTS:** [https://murf.ai/api/docs/text-to-speech/streaming](https://murf.ai/api/docs/text-to-speech/streaming)
+- **LiveKit Agents SDK:** [https://docs.livekit.io/agents](https://docs.livekit.io/agents)
+- **Deepgram STT:** [https://developers.deepgram.com](https://developers.deepgram.com)
+- **Agmarknet Prices:** [https://agmarknet.gov.in](https://agmarknet.gov.in)
+- **Open-Meteo Weather:** [https://open-meteo.com](https://open-meteo.com)
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for details.
