@@ -85,6 +85,8 @@ flowchart TD
 ### Day 8: Telemetry & Call Analytics Dashboard
 - Automated per-session call logs recording duration, channel (Browser vs SIP), tools called, topics discussed, and outcome status (`success` vs `failed`).
 
+![Kisan Mitra Call Analytics & Human Escalation Dashboard](./assets/kisan_mitra_analytics_and_escalation.png)
+
 ### Day 9: Stateful Specialist Agent Handoff
 - Implemented live bidirectional handoff between main `Kisan Mitra` and `CropDoctorAgent` (Pest & Disease Specialist) using `ctx.session.update_agent()`.
 - Preserves full caller context during handoff without asking repeated questions.
