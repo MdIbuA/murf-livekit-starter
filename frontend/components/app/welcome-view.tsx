@@ -148,6 +148,76 @@ export const WelcomeView = ({
           Supports Tamil · Tanglish · English
         </p>
 
+        {/* --- DAY 9: LIVE CONVERSATION & SPECIALIST AGENT HANDOFF DEMO --- */}
+        <div className="mt-12 w-full max-w-3xl rounded-2xl border border-primary/40 bg-card/80 p-6 text-left shadow-xl backdrop-blur-md">
+          <div className="flex items-center justify-between border-b border-border/30 pb-4">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+              </span>
+              <div>
+                <h2 className="text-foreground text-lg font-bold">
+                  🎙️ Live Voice Session & Specialist Handoff (Day 9)
+                </h2>
+                <p className="text-muted-foreground text-xs">Murf Falcon TTS (Native Tamil) + Bidirectional Specialist Handoff</p>
+              </div>
+            </div>
+            <span className="rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold text-primary border border-primary/40">
+              Active Call: sess_88192a
+            </span>
+          </div>
+
+          {/* Active Speaker Card */}
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Agent State */}
+            <div className="rounded-xl border border-primary/30 bg-background/90 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-primary tracking-wide uppercase">Active Voice Pipeline</span>
+                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">
+                  🔊 Murf Falcon TTS (Anisha)
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-xl">🌾</div>
+                <div>
+                  <p className="text-sm font-bold text-foreground">Kisan Mitra → CropDoctorAgent</p>
+                  <p className="text-xs text-muted-foreground">State: Transferred to Pest Specialist</p>
+                </div>
+              </div>
+              {/* Waveform indicator */}
+              <div className="h-8 flex items-center justify-center gap-1 bg-emerald-500/10 rounded-lg border border-emerald-500/20 px-3">
+                <span className="w-1 bg-emerald-500 h-4 animate-bounce"></span>
+                <span className="w-1 bg-emerald-500 h-6 animate-bounce delay-75"></span>
+                <span className="w-1 bg-emerald-500 h-3 animate-bounce delay-150"></span>
+                <span className="w-1 bg-emerald-500 h-5 animate-bounce delay-100"></span>
+                <span className="w-1 bg-emerald-500 h-2 animate-bounce"></span>
+                <span className="text-xs font-mono text-emerald-400 ml-2">Audio Streaming (Sub-300ms)</span>
+              </div>
+            </div>
+
+            {/* Transcript & Handoff Bubble */}
+            <div className="rounded-xl border border-border/40 bg-background/90 p-4 space-y-3">
+              <span className="text-xs font-bold text-muted-foreground tracking-wide uppercase">Live Transcript Stream</span>
+              
+              <div className="rounded-lg bg-primary/10 p-3 text-xs border border-primary/20 space-y-1">
+                <p className="font-semibold text-primary">Kisan Mitra (Main Agent):</p>
+                <p className="text-foreground leading-relaxed">
+                  "நான் உங்களை எங்கள் பயிர் நோய் மற்றும் பூச்சி வல்லுநரிடம் (Crop Specialist) இணைக்கிறேன்."
+                </p>
+              </div>
+
+              <div className="rounded-lg bg-emerald-500/10 p-3 text-xs border border-emerald-500/20 space-y-1">
+                <p className="font-semibold text-emerald-400">CropDoctorAgent (Specialist Takeover):</p>
+                <p className="text-foreground leading-relaxed">
+                  "வணக்கம்! நான் Kisan Mitra பயிர் மருத்துவ வல்லுநர். உங்கள் நெல் பயிர் மஞ்சள் நோய்க்கு Neem Oil spray 3ml/L தெளிக்கவும்."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         {/* --- DAY 8: CALL ANALYTICS & TELEMETRY DASHBOARD --- */}
         <div className="mt-12 w-full max-w-3xl rounded-2xl border border-border/40 bg-card/60 p-6 text-left shadow-xl backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-border/30 pb-4">

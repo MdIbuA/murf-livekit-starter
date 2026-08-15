@@ -91,6 +91,8 @@ flowchart TD
 - Implemented live bidirectional handoff between main `Kisan Mitra` and `CropDoctorAgent` (Pest & Disease Specialist) using `ctx.session.update_agent()`.
 - Preserves full caller context during handoff without asking repeated questions.
 
+![Kisan Mitra Stateful Specialist Agent Handoff](./assets/kisan_mitra_specialist_handoff.png)
+
 ### Day 10: Evaluation & Comprehensive Documentation
 - Built LLM-as-judge evaluation tests using LiveKit testing framework (`uv run pytest`).
 - Released comprehensive blog post, documentation, and open-source starter repo.
