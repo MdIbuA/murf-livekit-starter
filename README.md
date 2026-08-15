@@ -66,6 +66,8 @@ flowchart TD
 ### Day 3: Frontend UI & Audio Visualizer
 - Built Next.js web application utilizing **LiveKit Agents UI** components for real-time visual feedback (audio waveform, state badges, transcript stream).
 
+![Kisan Mitra Frontend UI & Audio Visualizer Interface](./assets/kisan_mitra_ui_screenshot.png)
+
 ### Day 4: Privacy-First Farmer Profile Memory (SQLite)
 - Integrated an SQLite database (`backend/src/db.py`) to save farmer profiles (name, district, crops, land size, last discussed topic).
 - **Hard Consent Mandate:** The agent *must* explicitly ask for permission aloud before saving any facts, and includes a `forget_farmer_profile` tool for instant data deletion.
